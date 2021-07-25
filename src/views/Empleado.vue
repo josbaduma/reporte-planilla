@@ -379,6 +379,22 @@ export default {
     save() {
       this.editedItem.id_empleado = this.id;
       if (this.editedIndex > -1) {
+        const splitedFechaInicio = this.editedItem.fecha_inicio.split("/");
+        const splitedFechaFinal = this.editedItem.fecha_final.split("/");
+        this.editedItem.fecha_inicio = Timestamp.fromDate(
+          new Date(
+            splitedFechaInicio[2],
+            splitedFechaInicio[1] - 1,
+            splitedFechaInicio[0]
+          )
+        );
+        this.editedItem.fecha_final = Timestamp.fromDate(
+          new Date(
+            splitedFechaFinal[2],
+            splitedFechaFinal[1] - 1,
+            splitedFechaFinal[0]
+          )
+        );
         this.editarRegistro(this.editedItem);
       } else {
         this.editedItem.fecha_inicio = Timestamp.fromDate(

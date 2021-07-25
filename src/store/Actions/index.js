@@ -36,7 +36,7 @@ const editarEmpleado = (context, empleado) => {
       nombre: empleado.nombre,
     })
     .then(() => {
-      router.push({ name: "inicio" });
+      //router.push({ name: "inicio" });
     });
 };
 
@@ -49,7 +49,7 @@ const agregarEmpleado = (context, empleado) => {
       fecha_inicio: empleado.fecha_inicio,
     })
     .then((doc) => {
-      router.push({ name: "Planilla" });
+      //router.push({ name: "Planilla" });
     });
 };
 
@@ -113,7 +113,7 @@ const agregarRegistro = (context, registro) => {
       fecha_final: registro.fecha_final,
     })
     .then((doc) => {
-      router.push({ name: "Empleado", params: { id: registro.id_empleado } });
+      //router.push({ name: "Empleado", params: { id: registro.id_empleado } });
     });
 };
 
@@ -123,19 +123,18 @@ const editarRegistro = (context, registro) => {
     .collection("registros")
     .doc(registro.id)
     .update({
-      nombre: registro.nombre,
-      domingo: registro.domingo,
-      lunes: registro.lunes,
-      martes: registro.martes,
-      miercoles: registro.miercoles,
-      jueves: registro.jueves,
-      viernes: registro.viernes,
-      sabado: registro.sabado,
+      domingo: parseInt(registro.domingo),
+      lunes: parseInt(registro.lunes),
+      martes: parseInt(registro.martes),
+      miercoles: parseInt(registro.miercoles),
+      jueves: parseInt(registro.jueves),
+      viernes: parseInt(registro.viernes),
+      sabado: parseInt(registro.sabado),
       fecha_inicio: registro.fecha_inicio,
       fecha_final: registro.fecha_final,
     })
     .then(() => {
-      router.push({ name: "Empleado", params: { id: registro.id_empleado } });
+      //router.push({ name: "Empleado", params: { id: registro.id_empleado } });
     });
 };
 
