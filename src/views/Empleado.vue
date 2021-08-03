@@ -3,60 +3,7 @@
     <v-container class="grey lighten-5">
       <v-row>
         <v-col cols="12" md="12" sm="12" lg="12" xl="12">
-          <v-card elevation="2" outlined shaped>
-            <v-card-title>
-              <v-row>
-                <v-col cols="1" class="pb-0">
-                  <div class="text-center">
-                    <v-btn
-                      class="mx-2"
-                      fab
-                      dark
-                      color="primary"
-                      small
-                      @click="$router.go(-1)"
-                    >
-                      <v-icon dark> fas fa-arrow-left </v-icon>
-                    </v-btn>
-                  </div>
-                </v-col>
-                <v-col cols="11" class="pb-0">
-                  <h3 class="font-weight-medium black--text ma-0">
-                    Información de Empleado
-                  </h3>
-                </v-col>
-              </v-row>
-            </v-card-title>
-
-            <v-card-text class="py-0">
-              <v-row align="center" class="mx-0">
-                <v-col cols="6" md="3">
-                  <h4 class="font-weight-medium black--text">Cédula:</h4>
-                  <span>{{ empleado.cedula }}</span></v-col
-                >
-                <v-col cols="6" md="3">
-                  <h4 class="font-weight-medium black--text">Nombre:</h4>
-                  <span>{{ empleado.nombre }}</span>
-                </v-col>
-                <v-col cols="6" md="3">
-                  <h4 class="font-weight-medium black--text">Apellidos:</h4>
-                  <span>{{ empleado.apellidos }}</span>
-                </v-col>
-                <v-col cols="6" md="3">
-                  <h4 class="font-weight-medium black--text">
-                    Fecha de ingreso:
-                  </h4>
-                  <span>{{ empleado.fecha_inicio }}</span>
-                </v-col>
-              </v-row>
-            </v-card-text>
-
-            <v-card-actions class="pt-0 px-5">
-              <v-btn text color="amber accent-4" x-large @click="editItem">
-                Editar
-              </v-btn>
-            </v-card-actions>
-          </v-card>
+          <Informacion :id="id" />
         </v-col>
 
         <v-col cols="12" md="12" sm="12" lg="12" xl="12">
@@ -248,6 +195,26 @@
                       </v-card-actions>
                     </v-card>
                   </v-dialog>
+                  <v-dialog v-model="dialogDelete" max-width="500px">
+                    <v-card>
+                      <v-card-title class="text-h5"
+                        >¿Seguro que desea borrar el registro?</v-card-title
+                      >
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" text @click="closeDelete"
+                          >Cancel</v-btn
+                        >
+                        <v-btn
+                          color="blue darken-1"
+                          text
+                          @click="deleteItemConfirm"
+                          >OK</v-btn
+                        >
+                        <v-spacer></v-spacer>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
                 </v-toolbar>
               </template>
               <template v-slot:[`item.horas`]="{ item }">
@@ -273,15 +240,20 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import { Timestamp } from "../../firebase";
+import Informacion from "../components/Informacion.vue";
 
 export default {
   name: "Empleado",
+  components: {
+    Informacion,
+  },
   data() {
     return {
       id: this.$route.params.id,
       menu: false,
       menu_final: false,
       dialog: false,
+      dialogDelete: false,
       page: 1,
       pageCount: 0,
       headers: [
@@ -327,21 +299,20 @@ export default {
     },
   },
   mounted() {
-    this.getEmpleado(this.id);
     this.getRegistrosEmpleado(this.id);
   },
   computed: {
-    ...mapState(["empleado", "registros"]),
+    ...mapState(["registros"]),
     formTitle() {
       return this.editedIndex === -1 ? "Nuevo Registro" : "Editar Registro";
     },
   },
   methods: {
     ...mapActions([
-      "getEmpleado",
       "getRegistrosEmpleado",
       "agregarRegistro",
       "editarRegistro",
+      "eliminarRegistro",
     ]),
     editItem(item) {
       this.editedIndex = this.registros.indexOf(item);
@@ -356,7 +327,9 @@ export default {
     },
 
     deleteItemConfirm() {
-      this.registros.splice(this.editedIndex, 1);
+      const reg = this.registros[this.editedIndex];
+      reg.id_empleado = this.id;
+      this.eliminarRegistro(reg);
       this.closeDelete();
     },
 
@@ -378,31 +351,15 @@ export default {
 
     save() {
       this.editedItem.id_empleado = this.id;
+      this.editedItem.fecha_inicio = Timestamp.fromDate(
+        new Date(this.editedItem.fecha_inicio)
+      );
+      this.editedItem.fecha_final = Timestamp.fromDate(
+        new Date(this.editedItem.fecha_final)
+      );
       if (this.editedIndex > -1) {
-        const splitedFechaInicio = this.editedItem.fecha_inicio.split("/");
-        const splitedFechaFinal = this.editedItem.fecha_final.split("/");
-        this.editedItem.fecha_inicio = Timestamp.fromDate(
-          new Date(
-            splitedFechaInicio[2],
-            splitedFechaInicio[1] - 1,
-            splitedFechaInicio[0]
-          )
-        );
-        this.editedItem.fecha_final = Timestamp.fromDate(
-          new Date(
-            splitedFechaFinal[2],
-            splitedFechaFinal[1] - 1,
-            splitedFechaFinal[0]
-          )
-        );
         this.editarRegistro(this.editedItem);
       } else {
-        this.editedItem.fecha_inicio = Timestamp.fromDate(
-          new Date(this.editedItem.fecha_inicio)
-        );
-        this.editedItem.fecha_final = Timestamp.fromDate(
-          new Date(this.editedItem.fecha_final)
-        );
         this.agregarRegistro(this.editedItem);
       }
       this.close();

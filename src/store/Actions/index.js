@@ -22,9 +22,11 @@ const getEmpleado = (context, id) => {
     .doc(id)
     .onSnapshot((doc) => {
       let empleado = doc.data();
-      let date = empleado.fecha_inicio.toDate();
+      empleado.fecha_inicio = empleado.fecha_inicio
+        .toDate()
+        .toISOString()
+        .substr(0, 10);
       empleado.id = doc.id;
-      empleado.fecha_inicio = date.toLocaleDateString();
       context.commit("setEmpleado", empleado);
     });
 };
@@ -35,9 +37,7 @@ const editarEmpleado = (context, empleado) => {
     .update({
       nombre: empleado.nombre,
     })
-    .then(() => {
-      //router.push({ name: "inicio" });
-    });
+    .then(() => {});
 };
 
 const agregarEmpleado = (context, empleado) => {
@@ -48,9 +48,7 @@ const agregarEmpleado = (context, empleado) => {
       apellidos: empleado.apellidos,
       fecha_inicio: empleado.fecha_inicio,
     })
-    .then((doc) => {
-      //router.push({ name: "Planilla" });
-    });
+    .then((doc) => {});
 };
 
 const eliminarEmpleado = ({ commit, dispatch }, id) => {
@@ -87,8 +85,14 @@ const getRegistrosEmpleado = (context, id) => {
         let dato = doc.data();
         dato.id = doc.id;
         dato.horas = sumHours(dato);
-        dato.fecha_inicio = dato.fecha_inicio.toDate().toLocaleDateString();
-        dato.fecha_final = dato.fecha_final.toDate().toLocaleDateString();
+        dato.fecha_inicio = dato.fecha_inicio
+          .toDate()
+          .toISOString()
+          .substr(0, 10);
+        dato.fecha_final = dato.fecha_final
+          .toDate()
+          .toISOString()
+          .substr(0, 10);
         dato.index = index;
         index++;
         registros.push(dato);
@@ -102,19 +106,17 @@ const agregarRegistro = (context, registro) => {
     .doc(registro.id_empleado)
     .collection("registros")
     .add({
-      domingo: registro.domingo,
-      lunes: registro.lunes,
-      martes: registro.martes,
-      miercoles: registro.miercoles,
-      jueves: registro.jueves,
-      viernes: registro.viernes,
-      sabado: registro.sabado,
+      domingo: parseInt(registro.domingo),
+      lunes: parseInt(registro.lunes),
+      martes: parseInt(registro.martes),
+      miercoles: parseInt(registro.miercoles),
+      jueves: parseInt(registro.jueves),
+      viernes: parseInt(registro.viernes),
+      sabado: parseInt(registro.sabado),
       fecha_inicio: registro.fecha_inicio,
       fecha_final: registro.fecha_final,
     })
-    .then((doc) => {
-      //router.push({ name: "Empleado", params: { id: registro.id_empleado } });
-    });
+    .then((doc) => {});
 };
 
 const editarRegistro = (context, registro) => {
@@ -133,9 +135,16 @@ const editarRegistro = (context, registro) => {
       fecha_inicio: registro.fecha_inicio,
       fecha_final: registro.fecha_final,
     })
-    .then(() => {
-      //router.push({ name: "Empleado", params: { id: registro.id_empleado } });
-    });
+    .then(() => {});
+};
+
+const eliminarRegistro = (context, registro) => {
+  db.collection("planilla")
+    .doc(registro.id_empleado)
+    .collection("registros")
+    .doc(registro.id)
+    .delete()
+    .then(() => {});
 };
 
 /* ---------------- Funciones de Inicio de Sesion ------------------------- */
@@ -177,6 +186,7 @@ export default {
   getRegistrosEmpleado,
   agregarRegistro,
   editarRegistro,
+  eliminarRegistro,
   ingresoUsuario,
   detectarUsuario,
   cerrarSesion,
