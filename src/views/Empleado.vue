@@ -134,6 +134,34 @@
                             </v-col>
                             <v-col cols="12" sm="6" md="3">
                               <v-text-field
+                                v-model="editedItem.salario_hora"
+                                label="Salario por hora"
+                                type="number"
+                              ></v-text-field
+                            ></v-col>
+                            <v-col cols="12" sm="6" md="3">
+                              <v-text-field
+                                v-model="editedItem.vales"
+                                label="Vales"
+                                type="number"
+                              ></v-text-field
+                            ></v-col>
+                            <v-col cols="12" sm="6" md="3">
+                              <v-text-field
+                                v-model="editedItem.seguro"
+                                label="Seguro"
+                                type="number"
+                              ></v-text-field>
+                            </v-col>
+                            <v-col cols="12" sm="6" md="3">
+                              <v-text-field
+                                v-model="editedItem.alimentacion"
+                                label="Alimentación"
+                                type="number"
+                              ></v-text-field
+                            ></v-col>
+                            <v-col cols="12" sm="6" md="3">
+                              <v-text-field
                                 v-model="editedItem.domingo"
                                 label="Horas Domingo"
                                 type="number"
@@ -221,6 +249,9 @@
                 <span>{{ item.horas }}</span>
               </template>
               <template v-slot:[`item.actions`]="{ item }">
+                <v-icon small class="mr-2" @click="printItem(item)"
+                  >fas fa-print</v-icon
+                >
                 <v-icon small class="mr-2" @click="editItem(item)"
                   >fas fa-edit</v-icon
                 >
@@ -233,6 +264,27 @@
           </div>
         </v-col>
       </v-row>
+
+      <v-dialog v-model="dialog_print" width="1100">
+        <v-card>
+          <v-card-title class="text-h5 grey lighten-2">
+            Colilla de Pago
+          </v-card-title>
+
+          <v-card-text>
+            <Colilla :registro="editedItem" />
+          </v-card-text>
+
+          <v-divider></v-divider>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" text @click="dialog_print = false">
+              Cerrar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-container>
   </v-layout>
 </template>
@@ -241,11 +293,13 @@
 import { mapState, mapActions } from "vuex";
 import { Timestamp } from "../../firebase";
 import Informacion from "../components/Informacion.vue";
+import Colilla from "../components/Colilla.vue";
 
 export default {
   name: "Empleado",
   components: {
     Informacion,
+    Colilla,
   },
   data() {
     return {
@@ -253,6 +307,7 @@ export default {
       menu: false,
       menu_final: false,
       dialog: false,
+      dialog_print: false,
       dialogDelete: false,
       page: 1,
       pageCount: 0,
@@ -273,8 +328,12 @@ export default {
         jueves: 0,
         viernes: 0,
         sabado: 0,
+        alimentacion: 0,
+        seguro: 0,
+        salario_hora: 0,
         fecha_inicio: null,
         fecha_final: null,
+        vales: 0,
       },
       defaultItem: {
         id: 0,
@@ -285,8 +344,12 @@ export default {
         jueves: 0,
         viernes: 0,
         sabado: 0,
+        alimentacion: 0,
+        seguro: 0,
+        salario_hora: 0,
         fecha_inicio: null,
         fecha_final: null,
+        vales: 0,
       },
     };
   },
@@ -318,6 +381,12 @@ export default {
       this.editedIndex = this.registros.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
+    },
+
+    printItem(item) {
+      this.editedIndex = this.registros.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog_print = true;
     },
 
     deleteItem(item) {

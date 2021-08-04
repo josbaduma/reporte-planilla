@@ -12,6 +12,7 @@
     "bootstrap-vue": "^2.16.0",
     "core-js": "^3.6.5",
     "firebase": "^7.19.1",
+    "html2pdf.js": "^0.9.3",
     "lodash": "^4.17.20",
     "moment": "^2.27.0",
     "roboto-fontface": "*",

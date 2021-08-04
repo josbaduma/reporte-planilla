@@ -9,7 +9,7 @@ const getPlanilla = (context) => {
       let dato = doc.data();
       let date = dato.fecha_inicio.toDate();
       dato.id = doc.id;
-      dato.fecha_inicio = date.toLocaleDateString();
+      dato.fecha_inicio = date.toISOString().substr(0, 10);
       planilla.push(dato);
     });
     context.commit("setPlanilla", planilla);
@@ -35,7 +35,12 @@ const editarEmpleado = (context, empleado) => {
   db.collection("planilla")
     .doc(empleado.id)
     .update({
+      cedula: empleado.cedula,
       nombre: empleado.nombre,
+      apellidos: empleado.apellidos,
+      fecha_inicio: empleado.fecha_inicio,
+      puesto: empleado.puesto,
+      tipo_colaborador: empleado.tipo_colaborador,
     })
     .then(() => {});
 };
@@ -47,6 +52,8 @@ const agregarEmpleado = (context, empleado) => {
       nombre: empleado.nombre,
       apellidos: empleado.apellidos,
       fecha_inicio: empleado.fecha_inicio,
+      puesto: empleado.puesto,
+      tipo_colaborador: empleado.tipo_colaborador,
     })
     .then((doc) => {});
 };
@@ -113,8 +120,12 @@ const agregarRegistro = (context, registro) => {
       jueves: parseInt(registro.jueves),
       viernes: parseInt(registro.viernes),
       sabado: parseInt(registro.sabado),
+      alimentacion: parseInt(registro.alimentacion),
+      seguro: parseInt(registro.seguro),
+      salario_hora: parseInt(registro.salario_hora),
       fecha_inicio: registro.fecha_inicio,
       fecha_final: registro.fecha_final,
+      vales: parseInt(registro.vales),
     })
     .then((doc) => {});
 };
@@ -132,8 +143,12 @@ const editarRegistro = (context, registro) => {
       jueves: parseInt(registro.jueves),
       viernes: parseInt(registro.viernes),
       sabado: parseInt(registro.sabado),
+      alimentacion: parseInt(registro.alimentacion),
+      seguro: parseInt(registro.seguro),
+      salario_hora: parseInt(registro.salario_hora),
       fecha_inicio: registro.fecha_inicio,
       fecha_final: registro.fecha_final,
+      vales: parseInt(registro.vales),
     })
     .then(() => {});
 };

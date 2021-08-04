@@ -166,6 +166,8 @@ export default {
       nombre: null,
       apellidos: null,
       fecha_inicio: null,
+      tipo_colaborador: '',
+      puesto: '',
     },
     defaultItem: {
       id: 0,
@@ -173,6 +175,8 @@ export default {
       nombre: null,
       apellidos: null,
       fecha_inicio: null,
+      tipo_colaborador: '',
+      puesto: '',
     },
     snackbar: false,
     duration: 4000,
