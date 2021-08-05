@@ -3,7 +3,7 @@
     <v-flex xs12 sm8 md6 xl4>
       <v-card>
         <v-card-text class="info display-1 text-uppercase white--text text-xs-center">
-          <span>Ingreso</span>
+          <span>Ingresar</span>
         </v-card-text>
         <v-card-text>
           <v-form class="mb-3">
