@@ -7,6 +7,10 @@
         </v-col>
 
         <v-col cols="12" md="12" sm="12" lg="12" xl="12">
+          <Calculadora />
+        </v-col>
+
+        <v-col cols="12" md="12" sm="12" lg="12" xl="12">
           <div>
             <v-data-table
               :headers="headers"
@@ -14,7 +18,7 @@
               sort-by="fecha_inicio"
               class="elevation-1 overflow-div"
               :page.sync="page"
-              :items-per-page="10"
+              :items-per-page="5"
               hide-default-footer
               @page-count="pageCount = $event"
             >
@@ -294,12 +298,14 @@ import { mapState, mapActions } from "vuex";
 import { Timestamp } from "../../firebase";
 import Informacion from "../components/Informacion.vue";
 import Colilla from "../components/Colilla.vue";
+import Calculadora from "../components/Calculadora.vue";
 
 export default {
   name: "Empleado",
   components: {
     Informacion,
     Colilla,
+    Calculadora,
   },
   data() {
     return {
@@ -361,8 +367,9 @@ export default {
       val || this.closeDelete();
     },
   },
-  mounted() {
-    this.getRegistrosEmpleado(this.id);
+  async mounted() {
+    await this.getEmpleado(this.id);
+    await this.getRegistrosEmpleado(this.id);
   },
   computed: {
     ...mapState(["registros"]),
@@ -372,6 +379,7 @@ export default {
   },
   methods: {
     ...mapActions([
+      "getEmpleado",
       "getRegistrosEmpleado",
       "agregarRegistro",
       "editarRegistro",

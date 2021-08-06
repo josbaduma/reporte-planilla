@@ -41,26 +41,25 @@
                       <v-card-text>
                         <v-container>
                           <v-row>
-                            <v-col cols="12" sm="6" md="3">
+                            <v-col cols="12" sm="6" md="4">
                               <v-text-field
                                 v-model="editedItem.cedula"
                                 label="Cédula"
-                                v-mask="'#-####-####'"
                               ></v-text-field>
                             </v-col>
-                            <v-col cols="12" sm="6" md="3">
+                            <v-col cols="12" sm="6" md="4">
                               <v-text-field
                                 v-model="editedItem.nombre"
                                 label="Nombre"
                               ></v-text-field>
                             </v-col>
-                            <v-col cols="12" sm="6" md="3">
+                            <v-col cols="12" sm="6" md="4">
                               <v-text-field
                                 v-model="editedItem.apellidos"
                                 label="Apellidos"
                               ></v-text-field>
                             </v-col>
-                            <v-col cols="12" sm="6" md="3">
+                            <v-col cols="12" sm="6" md="4">
                               <v-menu
                                 ref="menu"
                                 v-model="menu"
@@ -103,6 +102,18 @@
                                   </v-btn>
                                 </v-date-picker>
                               </v-menu>
+                            </v-col>
+                            <v-col cols="12" sm="6" md="4">
+                              <v-text-field
+                                v-model="editedItem.tipo_colaborador"
+                                label="Tipo de Colaborador"
+                              ></v-text-field>
+                            </v-col>
+                            <v-col cols="12" sm="6" md="4">
+                              <v-text-field
+                                v-model="editedItem.puesto"
+                                label="Puesto"
+                              ></v-text-field>
                             </v-col>
                           </v-row>
                         </v-container>
@@ -166,8 +177,8 @@ export default {
       nombre: null,
       apellidos: null,
       fecha_inicio: null,
-      tipo_colaborador: '',
-      puesto: '',
+      tipo_colaborador: null,
+      puesto: null,
     },
     defaultItem: {
       id: 0,
@@ -175,8 +186,8 @@ export default {
       nombre: null,
       apellidos: null,
       fecha_inicio: null,
-      tipo_colaborador: '',
-      puesto: '',
+      tipo_colaborador: null,
+      puesto: null,
     },
     snackbar: false,
     duration: 4000,
@@ -219,13 +230,9 @@ export default {
       });
     },
     save() {
-      const dateArray = this.editedItem.fecha_inicio.split("-");
-      const date = new Date(
-        parseInt(dateArray[0]),
-        parseInt(dateArray[1]) - 1,
-        parseInt(dateArray[2])
+      this.editedItem.fecha_inicio = Timestamp.fromDate(
+        new Date(this.editedItem.fecha_inicio)
       );
-      this.editedItem.fecha_inicio = Timestamp.fromDate(date);
       if (this.editedIndex > -1) {
         console.log("Editar");
       } else {

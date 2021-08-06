@@ -1,5 +1,5 @@
 import router from "../../router";
-import { auth, db } from "../../../firebase";
+import { auth, db, Timestamp } from "../../../firebase";
 
 /* ------------------ Planilla General --------------------------------- */
 const getPlanilla = (context) => {
@@ -41,6 +41,7 @@ const editarEmpleado = (context, empleado) => {
       fecha_inicio: empleado.fecha_inicio,
       puesto: empleado.puesto,
       tipo_colaborador: empleado.tipo_colaborador,
+      ultima_liquidacion: empleado.ultima_liquidacion,
     })
     .then(() => {});
 };
@@ -54,6 +55,7 @@ const agregarEmpleado = (context, empleado) => {
       fecha_inicio: empleado.fecha_inicio,
       puesto: empleado.puesto,
       tipo_colaborador: empleado.tipo_colaborador,
+      ultima_liquidacion: empleado.fecha_inicio,
     })
     .then((doc) => {});
 };
@@ -81,31 +83,35 @@ const sumHours = (item) => {
 };
 
 const getRegistrosEmpleado = (context, id) => {
-  db.collection("planilla")
-    .doc(id)
-    .collection("registros")
-    .orderBy("fecha_inicio")
-    .onSnapshot((querySnapshot) => {
-      const registros = [];
-      let index = 1;
-      querySnapshot.forEach((doc) => {
-        let dato = doc.data();
-        dato.id = doc.id;
-        dato.horas = sumHours(dato);
-        dato.fecha_inicio = dato.fecha_inicio
-          .toDate()
-          .toISOString()
-          .substr(0, 10);
-        dato.fecha_final = dato.fecha_final
-          .toDate()
-          .toISOString()
-          .substr(0, 10);
-        dato.index = index;
-        index++;
-        registros.push(dato);
+  setTimeout(() => {
+    const liquidacion = context.state.empleado.ultima_liquidacion;
+    db.collection("planilla")
+      .doc(id)
+      .collection("registros")
+      .orderBy("fecha_inicio")
+      .where("fecha_inicio", ">=", liquidacion)
+      .onSnapshot((querySnapshot) => {
+        const registros = [];
+        let index = 1;
+        querySnapshot.forEach((doc) => {
+          let dato = doc.data();
+          dato.id = doc.id;
+          dato.horas = sumHours(dato);
+          dato.fecha_inicio = dato.fecha_inicio
+            .toDate()
+            .toISOString()
+            .substr(0, 10);
+          dato.fecha_final = dato.fecha_final
+            .toDate()
+            .toISOString()
+            .substr(0, 10);
+          dato.index = index;
+          index++;
+          registros.push(dato);
+        });
+        return context.commit("setRegistros", registros);
       });
-      return context.commit("setRegistros", registros);
-    });
+  }, 500);
 };
 
 const agregarRegistro = (context, registro) => {

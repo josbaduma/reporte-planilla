@@ -45,7 +45,7 @@
           <span>{{ empleado.fecha_inicio }}</span>
         </v-col>
       </v-row>
-      <v-dialog v-model="dialog" max-width="500px">
+      <v-dialog v-model="dialog" max-width="720px">
         <v-card>
           <v-card-title>
             <span class="text-h5">{{ formTitle }}</span>
@@ -54,26 +54,25 @@
           <v-card-text>
             <v-container>
               <v-row>
-                <v-col cols="12" sm="6" md="3">
+                <v-col cols="12" sm="6" md="4">
                   <v-text-field
                     v-model="editedItem.cedula"
                     label="Cédula"
-                    v-mask="'#-####-####'"
                   ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6" md="3">
+                <v-col cols="12" sm="6" md="4">
                   <v-text-field
                     v-model="editedItem.nombre"
                     label="Nombre"
                   ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6" md="3">
+                <v-col cols="12" sm="6" md="4">
                   <v-text-field
                     v-model="editedItem.apellidos"
                     label="Apellidos"
                   ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6" md="3">
+                <v-col cols="12" sm="6" md="4">
                   <v-menu
                     ref="menu"
                     v-model="menu"
@@ -110,6 +109,18 @@
                       </v-btn>
                     </v-date-picker>
                   </v-menu>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field
+                    v-model="editedItem.tipo_colaborador"
+                    label="Tipo de colaborador"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field
+                    v-model="editedItem.puesto"
+                    label="Puesto"
+                  ></v-text-field>
                 </v-col>
               </v-row>
             </v-container>
@@ -194,6 +205,9 @@ export default {
       nombre: null,
       apellidos: null,
       fecha_inicio: null,
+      tipo_colaborador: null,
+      puesto: null,
+      ultima_liquidacion: null,
     },
     defaultItem: {
       id: 0,
@@ -201,10 +215,10 @@ export default {
       nombre: null,
       apellidos: null,
       fecha_inicio: null,
+      tipo_colaborador: null,
+      puesto: null,
+      ultima_liquidacion: null,
     },
   }),
-  mounted() {
-    this.getEmpleado(this.id);
-  },
 };
 </script>
