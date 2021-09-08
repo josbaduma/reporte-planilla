@@ -118,6 +118,16 @@
             <v-col cols="10" class="pa-1">
               {{ convertMoney((registro.horas * registro.salario_hora) - registro.alimentacion - registro.seguro + registro.vales) }}
             </v-col>
+
+            <v-col cols="2" class="pa-1">
+              <b>Firma del colaborador:</b>
+            </v-col>
+            <v-col cols="4" class="pa-1">&nbsp;</v-col>
+            <v-col cols="2" class="pa-1">
+              <b>Firma del empleador:</b>
+              Alejandro Leon Villegas
+            </v-col>
+            <v-col cols="4" class="pa-1">&nbsp;</v-col>
           </v-row>
         </div>
       </v-col>
@@ -156,7 +166,7 @@ export default {
         filename: `${this.hoy}-${this.empleado.nombre}.pdf`,
         image: { type: "jpeg", quality: 0.98 },
         html2canvas: { dpi: 192, letterRendering: true, removeContainer: true },
-        jsPDF: { unit: "in", format: [14, 3.125], orientation: "landscape" },
+        jsPDF: { unit: "in", format: [14, 3.6], orientation: "landscape" },
       });
     },
     convertMoney(value) {
@@ -173,9 +183,14 @@ export default {
 };
 </script>
 <style>
-.bordered-line .col {
+.bordered-line .col:not(:last-child) {
   border: 1px solid black;
   padding: 2px;
+  margin: 0px;
+}
+.bordered-line .col:last-child {
+  border: 1px solid black;
+  padding: 0px;
   margin: 0px;
 }
 </style>
