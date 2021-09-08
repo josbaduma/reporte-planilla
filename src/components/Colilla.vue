@@ -82,7 +82,7 @@
               <b>Salario Bruto:</b>
             </v-col>
             <v-col cols="3" class="pa-1">
-              {{ convertMoney(registro.horas * 1400) }}
+              {{ convertMoney(registro.horas * registro.salario_hora) }}
             </v-col>
 
             <v-col
@@ -116,7 +116,7 @@
               <b>Total a pagar:</b>
             </v-col>
             <v-col cols="10" class="pa-1">
-              {{ convertMoney((registro.horas * 1400) - registro.alimentacion - registro.seguro + registro.vales) }}
+              {{ convertMoney((registro.horas * registro.salario_hora) - registro.alimentacion - registro.seguro + registro.vales) }}
             </v-col>
           </v-row>
         </div>

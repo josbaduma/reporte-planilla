@@ -252,6 +252,16 @@
               <template v-slot:[`item.horas`]="{ item }">
                 <span>{{ item.horas }}</span>
               </template>
+              <template v-slot:[`item.salario_hora`]="{ item }">
+                <span>{{
+                  convertMoney(
+                    item.horas * item.salario_hora +
+                      item.vales -
+                      item.alimentacion -
+                      item.seguro
+                  )
+                }}</span>
+              </template>
               <template v-slot:[`item.actions`]="{ item }">
                 <v-icon small class="mr-2" @click="printItem(item)"
                   >fas fa-print</v-icon
@@ -322,6 +332,7 @@ export default {
         { text: "Fecha Inicial", value: "fecha_inicio", sortable: true },
         { text: "Fecha Final", value: "fecha_final", sortable: true },
         { text: "Horas Trabajadas", value: "horas", sortable: false },
+        { text: "Salario semanal", value: "salario_hora", sortable: false },
         { text: "Acciones", value: "actions", sortable: false },
       ],
       editedIndex: -1,
@@ -385,6 +396,16 @@ export default {
       "editarRegistro",
       "eliminarRegistro",
     ]),
+    convertMoney(value) {
+      const formatterPeso = new Intl.NumberFormat("es-CR", {
+        style: "currency",
+        currency: "CRC",
+        minimumFractionDigits: 0,
+      });
+      let valueFinal = formatterPeso.format(value);
+
+      return valueFinal;
+    },
     editItem(item) {
       this.editedIndex = this.registros.indexOf(item);
       this.editedItem = Object.assign({}, item);
