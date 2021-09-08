@@ -119,19 +119,19 @@ const agregarRegistro = (context, registro) => {
     .doc(registro.id_empleado)
     .collection("registros")
     .add({
-      domingo: parseInt(registro.domingo),
-      lunes: parseInt(registro.lunes),
-      martes: parseInt(registro.martes),
-      miercoles: parseInt(registro.miercoles),
-      jueves: parseInt(registro.jueves),
-      viernes: parseInt(registro.viernes),
-      sabado: parseInt(registro.sabado),
-      alimentacion: parseInt(registro.alimentacion),
-      seguro: parseInt(registro.seguro),
-      salario_hora: parseInt(registro.salario_hora),
+      domingo: parseFloat(registro.domingo),
+      lunes: parseFloat(registro.lunes),
+      martes: parseFloat(registro.martes),
+      miercoles: parseFloat(registro.miercoles),
+      jueves: parseFloat(registro.jueves),
+      viernes: parseFloat(registro.viernes),
+      sabado: parseFloat(registro.sabado),
+      alimentacion: parseFloat(registro.alimentacion),
+      seguro: parseFloat(registro.seguro),
+      salario_hora: parseFloat(registro.salario_hora),
       fecha_inicio: registro.fecha_inicio,
       fecha_final: registro.fecha_final,
-      vales: parseInt(registro.vales),
+      vales: parseFloat(registro.vales),
     })
     .then((doc) => {});
 };
@@ -142,19 +142,19 @@ const editarRegistro = (context, registro) => {
     .collection("registros")
     .doc(registro.id)
     .update({
-      domingo: parseInt(registro.domingo),
-      lunes: parseInt(registro.lunes),
-      martes: parseInt(registro.martes),
-      miercoles: parseInt(registro.miercoles),
-      jueves: parseInt(registro.jueves),
-      viernes: parseInt(registro.viernes),
-      sabado: parseInt(registro.sabado),
-      alimentacion: parseInt(registro.alimentacion),
-      seguro: parseInt(registro.seguro),
-      salario_hora: parseInt(registro.salario_hora),
+      domingo: parseFloat(registro.domingo),
+      lunes: parseFloat(registro.lunes),
+      martes: parseFloat(registro.martes),
+      miercoles: parseFloat(registro.miercoles),
+      jueves: parseFloat(registro.jueves),
+      viernes: parseFloat(registro.viernes),
+      sabado: parseFloat(registro.sabado),
+      alimentacion: parseFloat(registro.alimentacion),
+      seguro: parseFloat(registro.seguro),
+      salario_hora: parseFloat(registro.salario_hora),
       fecha_inicio: registro.fecha_inicio,
       fecha_final: registro.fecha_final,
-      vales: parseInt(registro.vales),
+      vales: parseFloat(registro.vales),
     })
     .then(() => {});
 };
