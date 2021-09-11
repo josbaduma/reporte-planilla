@@ -74,7 +74,7 @@
       </v-navigation-drawer>
     </nav>
     <v-main>
-      <router-view color="blue-grey lighten-1" />
+      <router-view color="blue-grey lighten-1" :key="$route.fullPath"/>
     </v-main>
   </v-app>
 </template>

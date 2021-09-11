@@ -70,18 +70,6 @@ const eliminarEmpleado = ({ commit, dispatch }, id) => {
 };
 
 /* ----------------- Funciones de Registros Empleado ---------------------- */
-const sumHours = (item) => {
-  let sum =
-    item.domingo +
-    item.lunes +
-    item.martes +
-    item.miercoles +
-    item.jueves +
-    item.viernes +
-    item.sabado;
-  return sum;
-};
-
 const getRegistrosEmpleado = (context, id) => {
   setTimeout(() => {
     const liquidacion = context.state.empleado.ultima_liquidacion;
@@ -96,7 +84,6 @@ const getRegistrosEmpleado = (context, id) => {
         querySnapshot.forEach((doc) => {
           let dato = doc.data();
           dato.id = doc.id;
-          dato.horas = sumHours(dato);
           dato.fecha_inicio = dato.fecha_inicio
             .toDate()
             .toISOString()
@@ -119,13 +106,7 @@ const agregarRegistro = (context, registro) => {
     .doc(registro.id_empleado)
     .collection("registros")
     .add({
-      domingo: parseFloat(registro.domingo),
-      lunes: parseFloat(registro.lunes),
-      martes: parseFloat(registro.martes),
-      miercoles: parseFloat(registro.miercoles),
-      jueves: parseFloat(registro.jueves),
-      viernes: parseFloat(registro.viernes),
-      sabado: parseFloat(registro.sabado),
+      horas: parseFloat(registro.horas),
       alimentacion: parseFloat(registro.alimentacion),
       seguro: parseFloat(registro.seguro),
       salario_hora: parseFloat(registro.salario_hora),
@@ -142,13 +123,7 @@ const editarRegistro = (context, registro) => {
     .collection("registros")
     .doc(registro.id)
     .update({
-      domingo: parseFloat(registro.domingo),
-      lunes: parseFloat(registro.lunes),
-      martes: parseFloat(registro.martes),
-      miercoles: parseFloat(registro.miercoles),
-      jueves: parseFloat(registro.jueves),
-      viernes: parseFloat(registro.viernes),
-      sabado: parseFloat(registro.sabado),
+      horas: parseFloat(registro.horas),
       alimentacion: parseFloat(registro.alimentacion),
       seguro: parseFloat(registro.seguro),
       salario_hora: parseFloat(registro.salario_hora),

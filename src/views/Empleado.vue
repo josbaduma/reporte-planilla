@@ -164,52 +164,10 @@
                                 type="number"
                               ></v-text-field
                             ></v-col>
-                            <v-col cols="12" sm="6" md="3">
+                            <v-col cols="12" sm="6" md="6">
                               <v-text-field
-                                v-model="editedItem.domingo"
-                                label="Horas Domingo"
-                                type="number"
-                              ></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field
-                                v-model="editedItem.lunes"
-                                label="Horas Lunes"
-                                type="number"
-                              ></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field
-                                v-model="editedItem.martes"
-                                label="Horas Martes"
-                                type="number"
-                              ></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field
-                                v-model="editedItem.miercoles"
-                                label="Horas Miercoles"
-                                type="number"
-                              ></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field
-                                v-model="editedItem.jueves"
-                                label="Horas Jueves"
-                                type="number"
-                              ></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field
-                                v-model="editedItem.viernes"
-                                label="Horas Viernes"
-                                type="number"
-                              ></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field
-                                v-model="editedItem.sabado"
-                                label="Horas Sábado"
+                                v-model="editedItem.horas"
+                                label="Horas Semanales"
                                 type="number"
                               ></v-text-field>
                             </v-col>
@@ -338,13 +296,7 @@ export default {
       editedIndex: -1,
       editedItem: {
         id: 0,
-        domingo: 0,
-        lunes: 0,
-        martes: 0,
-        miercoles: 0,
-        jueves: 0,
-        viernes: 0,
-        sabado: 0,
+        horas: 0,
         alimentacion: 0,
         seguro: 0,
         salario_hora: 0,
@@ -354,13 +306,7 @@ export default {
       },
       defaultItem: {
         id: 0,
-        domingo: 0,
-        lunes: 0,
-        martes: 0,
-        miercoles: 0,
-        jueves: 0,
-        viernes: 0,
-        sabado: 0,
+        horas: 0,
         alimentacion: 0,
         seguro: 0,
         salario_hora: 0,
