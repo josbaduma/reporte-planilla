@@ -160,7 +160,7 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import {Timestamp} from "../../firebase";
+import { Timestamp } from "../../firebase";
 import router from "../router";
 
 export default {
@@ -212,13 +212,35 @@ export default {
     },
   },
   computed: {
-    ...mapState(["planilla", "error"]),
+    ...mapState(["planilla", "error", "registros"]),
     formTitle() {
       return this.editedIndex === -1 ? "Nuevo Item" : "Editar Item";
+    },
+    calculateAguinaldo() {
+      const a = _.reduce(
+        this.registros,
+        function(sum, n) {
+          return (
+            sum + n.horas * n.salario_hora + n.vales - n.alimentacion - n.seguro
+          );
+        },
+        0
+      );
+      return this.convertMoney(a / 12);
     },
   },
   methods: {
     ...mapActions(["getPlanilla", "agregarEmpleado", "eliminarEmpleado"]),
+    convertMoney(value) {
+      const formatterPeso = new Intl.NumberFormat("es-CR", {
+        style: "currency",
+        currency: "CRC",
+        minimumFractionDigits: 2,
+      });
+      let valueFinal = formatterPeso.format(value);
+
+      return valueFinal;
+    },
     goEmployeePage(item) {
       router.push({ name: "Empleado", params: { id: item.id } });
     },

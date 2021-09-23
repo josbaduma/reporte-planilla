@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12" ref="document" id="registro-impreso" class="pa-0">
+      <v-col cols="12" ref="document" id="registro-impreso" class="pa-0" style="color:#000000;">
         <div class="pa-0">
           <v-row class="bordered-line pa-0">
             <v-col cols="6" class="pa-1" style="font-size:18px;">
