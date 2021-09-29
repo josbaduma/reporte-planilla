@@ -55,7 +55,7 @@ const agregarEmpleado = (context, empleado) => {
       fecha_inicio: empleado.fecha_inicio,
       puesto: empleado.puesto,
       tipo_colaborador: empleado.tipo_colaborador,
-      ultima_liquidacion: empleado.fecha_inicio,
+      ultima_liquidacion: empleado.ultima_liquidacion,
     })
     .then((doc) => {});
 };

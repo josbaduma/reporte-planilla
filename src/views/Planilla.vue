@@ -179,6 +179,7 @@ export default {
       fecha_inicio: null,
       tipo_colaborador: null,
       puesto: null,
+      ultima_liquidacion: null,
     },
     defaultItem: {
       id: 0,
@@ -188,6 +189,7 @@ export default {
       fecha_inicio: null,
       tipo_colaborador: null,
       puesto: null,
+      ultima_liquidacion: null,
     },
     snackbar: false,
     duration: 4000,
@@ -255,10 +257,13 @@ export default {
       this.editedItem.fecha_inicio = Timestamp.fromDate(
         new Date(this.editedItem.fecha_inicio)
       );
+      this.editedItem.ultima_liquidacion = this.editedItem.fecha_inicio;
+
       if (this.editedIndex > -1) {
         console.log("Editar");
       } else {
         this.agregarEmpleado(this.editedItem);
+        console.log('Liquidación:' + this.editedIndex.ultima_liquidacion);
       }
       this.close();
     },
