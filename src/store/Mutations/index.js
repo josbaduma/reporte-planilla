@@ -19,6 +19,10 @@ const setRegistros = (state, payload) => {
   state.registros = payload;
 };
 
+const setAllRegistros = (state, payload) => {
+  state.allRegistros = payload;
+};
+
 export default {
   setUsuario,
   setError,
@@ -26,4 +30,5 @@ export default {
   setEmpleado,
   eliminarEmpleado,
   setRegistros,
+  setAllRegistros,
 };

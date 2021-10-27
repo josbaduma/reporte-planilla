@@ -14,7 +14,7 @@
           <div>
             <v-data-table
               :headers="headers"
-              :items="registros"
+              :items="allRegistros"
               sort-by="fecha_inicio"
               class="elevation-1 overflow-div"
               :page.sync="page"
@@ -327,9 +327,10 @@ export default {
   async mounted() {
     await this.getEmpleado(this.id);
     await this.getRegistrosEmpleado(this.id);
+    await this.getAllRegistrosEmpleado(this.id);
   },
   computed: {
-    ...mapState(["registros"]),
+    ...mapState(["registros", "allRegistros"]),
     formTitle() {
       return this.editedIndex === -1 ? "Nuevo Registro" : "Editar Registro";
     },
@@ -338,6 +339,7 @@ export default {
     ...mapActions([
       "getEmpleado",
       "getRegistrosEmpleado",
+      "getAllRegistrosEmpleado",
       "agregarRegistro",
       "editarRegistro",
       "eliminarRegistro",

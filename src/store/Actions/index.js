@@ -101,6 +101,36 @@ const getRegistrosEmpleado = (context, id) => {
   }, 500);
 };
 
+const getAllRegistrosEmpleado = (context, id) => {
+  setTimeout(() => {
+    const liquidacion = context.state.empleado.ultima_liquidacion;
+    db.collection("planilla")
+      .doc(id)
+      .collection("registros")
+      .orderBy("fecha_inicio")
+      .onSnapshot((querySnapshot) => {
+        const registros = [];
+        let index = 1;
+        querySnapshot.forEach((doc) => {
+          let dato = doc.data();
+          dato.id = doc.id;
+          dato.fecha_inicio = dato.fecha_inicio
+            .toDate()
+            .toISOString()
+            .substr(0, 10);
+          dato.fecha_final = dato.fecha_final
+            .toDate()
+            .toISOString()
+            .substr(0, 10);
+          dato.index = index;
+          index++;
+          registros.push(dato);
+        });
+        return context.commit("setAllRegistros", registros);
+      });
+  }, 500);
+};
+
 const agregarRegistro = (context, registro) => {
   db.collection("planilla")
     .doc(registro.id_empleado)
@@ -180,6 +210,7 @@ export default {
   agregarEmpleado,
   eliminarEmpleado,
   getRegistrosEmpleado,
+  getAllRegistrosEmpleado,
   agregarRegistro,
   editarRegistro,
   eliminarRegistro,
