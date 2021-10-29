@@ -373,8 +373,10 @@ export default {
     },
 
     deleteItemConfirm() {
-      const reg = this.registros[this.editedIndex];
-      reg.id_empleado = this.id;
+      const reg = {
+        id: this.editedItem.id,
+        id_empleado: this.id,
+      };
       this.eliminarRegistro(reg);
       this.closeDelete();
     },
