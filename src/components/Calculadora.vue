@@ -60,7 +60,6 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import _ from "lodash";
-import { Timestamp } from "../../firebase";
 import Vale from "./Vale.vue";
 
 export default {

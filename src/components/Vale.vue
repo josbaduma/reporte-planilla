@@ -89,9 +89,10 @@
 
 <script>
 import html2pdf from "html2pdf.js";
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 import moment from "moment";
 import _ from "lodash";
+import { Timestamp } from "../../firebase";
 
 export default {
   name: "Vale",
@@ -118,6 +119,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions(['editarEmpleado']),
     exportToPDF() {
       const a = document.getElementById("liquidacion-impreso");
       html2pdf(a, {

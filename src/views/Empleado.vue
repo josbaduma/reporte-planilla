@@ -355,7 +355,7 @@ export default {
       return valueFinal;
     },
     editItem(item) {
-      this.editedIndex = this.registros.indexOf(item);
+      this.editedIndex = this.allRegistros.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
@@ -406,6 +406,7 @@ export default {
         new Date(this.editedItem.fecha_final)
       );
       if (this.editedIndex > -1) {
+        console.log('Editando...');
         this.editarRegistro(this.editedItem);
       } else {
         this.agregarRegistro(this.editedItem);
