@@ -328,9 +328,10 @@ export default {
     await this.getEmpleado(this.id);
     await this.getRegistrosEmpleado(this.id);
     await this.getAllRegistrosEmpleado(this.id);
+    await this.getRegistrosEmpleadoVacaciones(this.id);
   },
   computed: {
-    ...mapState(["registros", "allRegistros"]),
+    ...mapState(["registros", "allRegistros", "registrosVacaciones"]),
     formTitle() {
       return this.editedIndex === -1 ? "Nuevo Registro" : "Editar Registro";
     },
@@ -343,6 +344,7 @@ export default {
       "agregarRegistro",
       "editarRegistro",
       "eliminarRegistro",
+      "getRegistrosEmpleadoVacaciones",
     ]),
     convertMoney(value) {
       const formatterPeso = new Intl.NumberFormat("es-CR", {

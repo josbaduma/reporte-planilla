@@ -42,6 +42,7 @@ const editarEmpleado = (context, empleado) => {
       puesto: empleado.puesto,
       tipo_colaborador: empleado.tipo_colaborador,
       ultima_liquidacion: empleado.ultima_liquidacion,
+      ultima_liquidacion_vacaciones: empleado.ultima_liquidacion_vacaciones,
     })
     .then(() => {});
 };
@@ -56,6 +57,7 @@ const agregarEmpleado = (context, empleado) => {
       puesto: empleado.puesto,
       tipo_colaborador: empleado.tipo_colaborador,
       ultima_liquidacion: empleado.ultima_liquidacion,
+      ultima_liquidacion_vacaciones: empleado.ultima_liquidacion_vacaciones,
     })
     .then((doc) => {});
 };
@@ -101,9 +103,39 @@ const getRegistrosEmpleado = (context, id) => {
   }, 500);
 };
 
+const getRegistrosEmpleadoVacaciones = (context, id) => {
+  setTimeout(() => {
+    const liquidacion = context.state.empleado.ultima_liquidacion_vacaciones;
+    db.collection("planilla")
+      .doc(id)
+      .collection("registros")
+      .orderBy("fecha_inicio")
+      .where("fecha_inicio", ">=", liquidacion)
+      .onSnapshot((querySnapshot) => {
+        const registros = [];
+        let index = 1;
+        querySnapshot.forEach((doc) => {
+          let dato = doc.data();
+          dato.id = doc.id;
+          dato.fecha_inicio = dato.fecha_inicio
+            .toDate()
+            .toISOString()
+            .substr(0, 10);
+          dato.fecha_final = dato.fecha_final
+            .toDate()
+            .toISOString()
+            .substr(0, 10);
+          dato.index = index;
+          index++;
+          registros.push(dato);
+        });
+        return context.commit("setRegistrosVacaciones", registros);
+      });
+  }, 500);
+};
+
 const getAllRegistrosEmpleado = (context, id) => {
   setTimeout(() => {
-    const liquidacion = context.state.empleado.ultima_liquidacion;
     db.collection("planilla")
       .doc(id)
       .collection("registros")
@@ -210,6 +242,7 @@ export default {
   agregarEmpleado,
   eliminarEmpleado,
   getRegistrosEmpleado,
+  getRegistrosEmpleadoVacaciones,
   getAllRegistrosEmpleado,
   agregarRegistro,
   editarRegistro,

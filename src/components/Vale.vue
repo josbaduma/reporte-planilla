@@ -18,10 +18,15 @@
             </v-col>
             <v-col cols="2" class="pa-1">
               {{
-                empleado.ultima_liquidacion
-                  .toDate()
-                  .toISOString()
-                  .substr(0, 10)
+                vacaciones === undefined
+                  ? empleado.ultima_liquidacion
+                      .toDate()
+                      .toISOString()
+                      .substr(0, 10)
+                  : empleado.ultima_liquidacion_vacaciones
+                      .toDate()
+                      .toISOString()
+                      .substr(0, 10)
               }}
             </v-col>
             <v-col cols="1" class="pa-1">
@@ -63,16 +68,16 @@
               {{ calcHours }}
             </v-col>
 
-            <v-col cols="3" class="pa-1">
+            <v-col v-if="vacaciones === undefined" cols="3" class="pa-1">
               <b>Aguinaldo:</b>
             </v-col>
-            <v-col cols="3" class="pa-1">
+            <v-col v-if="vacaciones === undefined" cols="9" class="pa-1">
               {{ aguinaldo }}
             </v-col>
-            <v-col cols="3" class="pa-1">
+            <v-col v-if="aguinaldo === undefined" cols="3" class="pa-1">
               <b>Vacaciones:</b>
             </v-col>
-            <v-col cols="3" class="pa-1">
+            <v-col v-if="aguinaldo === undefined" cols="9" class="pa-1">
               {{ vacaciones }}
             </v-col>
           </v-row>
@@ -119,7 +124,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['editarEmpleado']),
+    ...mapActions(["editarEmpleado"]),
     exportToPDF() {
       const a = document.getElementById("liquidacion-impreso");
       html2pdf(a, {
@@ -149,8 +154,16 @@ export default {
         fecha_inicio: Timestamp.fromDate(new Date(this.empleado.fecha_inicio)),
         tipo_colaborador: this.empleado.tipo_colaborador,
         puesto: this.empleado.puesto,
-        ultima_liquidacion: Timestamp.now(),
+        ultima_liquidacion:
+          this.vacaciones === undefined
+            ? Timestamp.now()
+            : this.empleado.ultima_liquidacion,
+        ultima_liquidacion_vacaciones:
+          this.aguinaldo === undefined
+            ? Timestamp.now()
+            : this.empleado.ultima_liquidacion_vacaciones,
       };
+      console.log(a);
       this.editarEmpleado(a);
       await this.sleep(750);
       this.$router.go();
