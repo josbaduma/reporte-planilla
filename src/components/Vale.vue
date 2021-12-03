@@ -9,83 +9,197 @@
         style="color:#000000;"
       >
         <div class="pa-0">
-          <v-row class="bordered-line pa-0">
-            <v-col cols="5" class="pa-1" style="font-size:18px;">
-              <b>Recibo Liquidación</b>
-            </v-col>
-            <v-col cols="2" class="pa-1">
-              <b>Periodo Del:</b>
-            </v-col>
-            <v-col cols="2" class="pa-1">
-              {{
-                vacaciones === undefined
-                  ? empleado.ultima_liquidacion
-                      .toDate()
-                      .toISOString()
-                      .substr(0, 10)
-                  : empleado.ultima_liquidacion_vacaciones
-                      .toDate()
-                      .toISOString()
-                      .substr(0, 10)
-              }}
-            </v-col>
-            <v-col cols="1" class="pa-1">
-              <b>Al:</b>
-            </v-col>
-            <v-col cols="2" class="pa-1">
-              {{ hoy }}
-            </v-col>
-
-            <!-- Informacion de Empleado -->
-            <v-col cols="3" class="pa-1"> <b>Número de Indentidad</b>: </v-col>
-            <v-col cols="3" class="pa-1">
-              {{ empleado.cedula }}
-            </v-col>
-            <v-col cols="3" class="pa-1">
-              <b>Nombre:</b>
-            </v-col>
-            <v-col cols="3" class="pa-1">
-              {{ empleado.nombre }} {{ empleado.apellidos }}
-            </v-col>
-            <v-col cols="1" class="pa-1">
-              <b>Puesto:</b>
-            </v-col>
-            <v-col cols="5" class="pa-1">
-              {{ empleado.puesto }}
-            </v-col>
-
-            <v-col cols="3" class="pa-1">
-              <b>Tipo de Colaborador:</b>
-            </v-col>
-            <v-col cols="3" class="pa-1">
-              {{ empleado.tipo_colaborador }}
-            </v-col>
-
-            <v-col cols="3" class="pa-1">
-              <b>Horas Laboradas:</b>
-            </v-col>
-            <v-col cols="9" class="pa-1">
-              {{ calcHours }}
-            </v-col>
-
-            <v-col v-if="vacaciones === undefined" cols="3" class="pa-1">
-              <b>Aguinaldo:</b>
-            </v-col>
-            <v-col v-if="vacaciones === undefined" cols="9" class="pa-1">
-              {{ aguinaldo }}
-            </v-col>
-            <v-col v-if="aguinaldo === undefined" cols="3" class="pa-1">
-              <b>Vacaciones:</b>
-            </v-col>
-            <v-col v-if="aguinaldo === undefined" cols="9" class="pa-1">
-              {{ vacaciones }}
-            </v-col>
-          </v-row>
+          <table class="tg" id="tableLiquidacion">
+            <thead>
+              <tr>
+                <th
+                  data-b-a-s="thin"
+                  data-f-bold="true"
+                  class="tg-eqm3"
+                  colspan="4"
+                >
+                  <span style="font-weight: bold">Recibo de Liquidación</span>
+                </th>
+                <th
+                  data-b-a-s="thin"
+                  data-f-bold="true"
+                  class="tg-0pky"
+                  colspan="2"
+                >
+                  <span style="font-weight: bold">Periodo del:</span>
+                </th>
+                <th
+                  data-b-a-s="thin"
+                  data-a-h="right"
+                  class="tg-0pky"
+                  colspan="2"
+                >
+                  {{
+                    vacaciones === undefined
+                      ? empleado.ultima_liquidacion
+                          .toDate()
+                          .toISOString()
+                          .substr(0, 10)
+                      : empleado.ultima_liquidacion_vacaciones
+                          .toDate()
+                          .toISOString()
+                          .substr(0, 10)
+                  }}
+                </th>
+                <th
+                  data-b-a-s="thin"
+                  data-a-h="right"
+                  class="tg-0pky"
+                  colspan="2"
+                >
+                  Al:
+                </th>
+                <th
+                  data-b-a-s="thin"
+                  data-a-h="right"
+                  class="tg-0pky"
+                  colspan="2"
+                >
+                  {{ hoy }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td
+                  data-b-a-s="thin"
+                  data-f-bold="true"
+                  class="tg-0pky"
+                  colspan="3"
+                >
+                  <span style="font-weight: bold"
+                    >Número de identificación:</span
+                  >
+                </td>
+                <td data-b-a-s="thin" class="tg-0pky" colspan="3">
+                  {{ empleado.cedula }}
+                </td>
+                <td
+                  data-b-a-s="thin"
+                  data-f-bold="true"
+                  class="tg-0pky"
+                  colspan="3"
+                >
+                  <span style="font-weight: bold">Nombre:</span>
+                </td>
+                <td data-b-a-s="thin" class="tg-0pky" colspan="3">
+                  <span style="font-weight: 400; font-style: normal"
+                    >{{ empleado.nombre }} {{ empleado.apellidos }}</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td
+                  data-b-a-s="thin"
+                  data-f-bold="true"
+                  class="tg-0pky"
+                  colspan="3"
+                >
+                  <span style="font-weight: bold">Puesto:</span>
+                </td>
+                <td data-b-a-s="thin" class="tg-0pky" colspan="3">
+                  <span style="font-weight: 400; font-style: normal">{{
+                    empleado.puesto
+                  }}</span>
+                </td>
+                <td
+                  data-b-a-s="thin"
+                  data-f-bold="true"
+                  class="tg-0pky"
+                  colspan="3"
+                >
+                  <span style="font-weight: bolder">Tipo de Colaborador:</span>
+                </td>
+                <td data-b-a-s="thin" class="tg-0pky" colspan="3">
+                  <span style="font-weight: 400; font-style: normal">{{
+                    empleado.tipo_colaborador
+                  }}</span>
+                </td>
+              </tr>
+              <tr>
+                <td
+                  data-b-a-s="thin"
+                  data-f-bold="true"
+                  class="tg-0pky"
+                  colspan="3"
+                >
+                  <span style="font-weight: 700; font-style: normal"
+                    >Horas Laboradas:</span
+                  >
+                </td>
+                <td data-b-a-s="thin" class="tg-0pky" colspan="9">
+                  <span style="font-weight: 400; font-style: normal">{{
+                    calcHours
+                  }}</span>
+                </td>
+              </tr>
+              <tr>
+                <td
+                  v-if="vacaciones === undefined"
+                  data-b-a-s="thin"
+                  data-f-bold="true"
+                  class="tg-0pky"
+                  colspan="3"
+                >
+                  <span style="font-weight: 700; font-style: normal"
+                    >Aguinaldo:</span
+                  >
+                </td>
+                <td
+                  v-if="vacaciones === undefined"
+                  data-b-a-s="thin"
+                  class="tg-0pky"
+                  colspan="9"
+                >
+                  <span style="font-weight: 400; font-style: normal">{{
+                    aguinaldo
+                  }}</span>
+                </td>
+                <td
+                  v-if="aguinaldo === undefined"
+                  data-b-a-s="thin"
+                  data-f-bold="true"
+                  class="tg-0pky"
+                  colspan="3"
+                >
+                  <span style="font-weight: 700; font-style: normal"
+                    >Vacaciones:</span
+                  >
+                </td>
+                <td
+                  v-if="aguinaldo === undefined"
+                  data-b-a-s="thin"
+                  class="tg-0pky"
+                  colspan="9"
+                >
+                  <span style="font-weight: 400; font-style: normal">{{
+                    vacaciones
+                  }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </v-col>
 
       <v-col cols="12">
-        <v-btn color="primary" @click="exportToPDF">Exportar a PDF</v-btn>
+        <v-btn
+          color="primary"
+          @click="
+            exportTableToExcel(
+              'tableLiquidacion',
+              `${hoy}-liquidacion-${
+                vacaciones === undefined ? 'aguinaldo' : 'vacaciones'
+              }-${empleado.nombre}`
+            )
+          "
+          >Exportar a Excel</v-btn
+        >
         <v-btn color="primary" class="ml-4" @click="liquidar">Liquidar</v-btn>
       </v-col>
     </v-row>
@@ -112,10 +226,10 @@ export default {
     vacaciones: String,
   },
   computed: {
-    ...mapState(["empleado", "registros"]),
+    ...mapState(["empleado", "registros", "registrosVacaciones"]),
     calcHours() {
       return _.reduce(
-        this.registros,
+        this.vacaciones === undefined ? this.registros : this.registrosVacaciones,
         (sum, n) => {
           return sum + n.horas;
         },
@@ -133,6 +247,17 @@ export default {
         image: { type: "jpeg", quality: 0.98 },
         html2canvas: { dpi: 192, letterRendering: true, removeContainer: true },
         jsPDF: { unit: "in", format: [12, 2.835], orientation: "landscape" },
+      });
+    },
+    exportTableToExcel(tableID, filename = "") {
+      filename = filename ? filename + ".xlsx" : "excel_data.xlsx";
+
+      let table = document.getElementById(tableID);
+      TableToExcel.convert(table, {
+        name: filename,
+        sheet: {
+          name: "Recibo Empleado",
+        },
       });
     },
     convertMoney(value) {
