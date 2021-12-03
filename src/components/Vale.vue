@@ -13,14 +13,23 @@
             <thead>
               <tr>
                 <th
+                  data-height="32"
+                  data-f-sz="16"
                   data-b-a-s="thin"
                   data-f-bold="true"
+                  data-a-wrap="true"
                   class="tg-eqm3"
-                  colspan="4"
+                  colspan="12"
                 >
-                  <span style="font-weight: bold">Recibo de Liquidación</span>
+                  <span style="font-weight: bold"
+                    >Pago de
+                    {{
+                      vacaciones === undefined ? "Aguinaldo" : "Vacaciones"
+                    }}
+                    2021</span
+                  >
                 </th>
-                <th
+                <!-- <th
                   data-b-a-s="thin"
                   data-f-bold="true"
                   class="tg-0pky"
@@ -61,12 +70,12 @@
                   colspan="2"
                 >
                   {{ hoy }}
-                </th>
+                </th> -->
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td
+                <!-- <td
                   data-b-a-s="thin"
                   data-f-bold="true"
                   class="tg-0pky"
@@ -78,7 +87,7 @@
                 </td>
                 <td data-b-a-s="thin" class="tg-0pky" colspan="3">
                   {{ empleado.cedula }}
-                </td>
+                </td> -->
                 <td
                   data-b-a-s="thin"
                   data-f-bold="true"
@@ -87,7 +96,7 @@
                 >
                   <span style="font-weight: bold">Nombre:</span>
                 </td>
-                <td data-b-a-s="thin" class="tg-0pky" colspan="3">
+                <td data-b-a-s="thin" class="tg-0pky" colspan="9">
                   <span style="font-weight: 400; font-style: normal"
                     >{{ empleado.nombre }} {{ empleado.apellidos }}</span
                   >
@@ -182,6 +191,58 @@
                   }}</span>
                 </td>
               </tr>
+              <tr data-height="32">
+                <td
+                  data-b-a-s="thin"
+                  data-a-wrap="true"
+                  data-a-v="top"
+                  class="tg-0pky"
+                  colspan="3"
+                  rowspan="2"
+                >
+                  <span style="font-weight:700;font-style:normal"
+                    >Firma del colaborador:</span
+                  >
+                </td>
+                <td
+                  data-b-a-s="thin"
+                  data-a-wrap="true"
+                  class="tg-0pky"
+                  colspan="3"
+                  rowspan="2"
+                ></td>
+                <td
+                  data-b-t-s="thin"
+                  data-b-l-s="thin"
+                  data-b-r-s="thin"
+                  data-a-wrap="true"
+                  data-a-v="top"
+                  class="tg-0pky"
+                  colspan="3"
+                >
+                  <b>Firma del empleador:</b>
+                </td>
+                <td
+                  data-b-a-s="thin"
+                  data-a-wrap="true"
+                  class="tg-0pky"
+                  colspan="3"
+                  rowspan="2"
+                ></td>
+              </tr>
+              <tr>
+                <td
+                  data-b-b-s="thin"
+                  data-b-l-s="thin"
+                  data-b-r-s="thin"
+                  class="tg-0lax"
+                  colspan="3"
+                >
+                  <span style="font-weight:400;font-style:normal"
+                    >Alejandro León Villegas</span
+                  >
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -229,7 +290,9 @@ export default {
     ...mapState(["empleado", "registros", "registrosVacaciones"]),
     calcHours() {
       return _.reduce(
-        this.vacaciones === undefined ? this.registros : this.registrosVacaciones,
+        this.vacaciones === undefined
+          ? this.registros
+          : this.registrosVacaciones,
         (sum, n) => {
           return sum + n.horas;
         },
