@@ -258,12 +258,13 @@ export default {
         new Date(this.editedItem.fecha_inicio)
       );
       this.editedItem.ultima_liquidacion = this.editedItem.fecha_inicio;
-
+      this.editedItem.ultima_liquidacion_vacaciones = this.editedItem.fecha_inicio;
+      
       if (this.editedIndex > -1) {
         console.log("Editar");
       } else {
         this.agregarEmpleado(this.editedItem);
-        console.log('Liquidación:' + this.editedIndex.ultima_liquidacion);
+        console.log("Liquidación:" + this.editedIndex.ultima_liquidacion);
       }
       this.close();
     },
