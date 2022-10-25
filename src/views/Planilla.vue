@@ -206,7 +206,7 @@ export default {
     ],
   }),
   created() {
-    this.getPlanilla();
+    this.getPlanilla(false);
   },
   watch: {
     dialog(val) {

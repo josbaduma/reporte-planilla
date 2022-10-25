@@ -2,8 +2,8 @@ import router from "../../router";
 import { auth, db, Timestamp } from "../../../firebase";
 
 /* ------------------ Planilla General --------------------------------- */
-const getPlanilla = (context) => {
-  db.collection("planilla").onSnapshot((querySnapshot) => {
+const getPlanilla = (context, archive) => {
+  db.collection("planilla").where("archive", "==", archive).onSnapshot((querySnapshot) => {
     const planilla = [];
     querySnapshot.forEach((doc) => {
       let dato = doc.data();
