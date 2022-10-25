@@ -148,10 +148,7 @@ export default {
         return 0;
       }
       return (
-        this.registrosVacaciones[0].horas * this.registrosVacaciones[0].salario_hora +
-        this.registrosVacaciones[0].vales -
-        this.registrosVacaciones[0].alimentacion -
-        this.registrosVacaciones[0].seguro
+        this.registrosVacaciones[0].horas * this.registrosVacaciones[0].salario_hora
       );
     },
     calculateVacation() {
@@ -162,7 +159,7 @@ export default {
         this.registros,
         function(sum, n) {
           return (
-            sum + n.horas * n.salario_hora + n.vales - n.alimentacion - n.seguro
+            sum + n.horas * n.salario_hora
           );
         },
         0

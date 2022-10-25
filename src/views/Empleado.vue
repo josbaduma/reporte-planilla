@@ -21,6 +21,8 @@
               :items-per-page="5"
               hide-default-footer
               @page-count="pageCount = $event"
+              :sort-desc="[true]"
+              :sort-by="['fecha_inicio']"
             >
               <template v-slot:top>
                 <v-toolbar flat color="white">
