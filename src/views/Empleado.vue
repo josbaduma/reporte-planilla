@@ -7,9 +7,12 @@
         </v-col>
 
         <v-col cols="12" md="12" sm="12" lg="12" xl="12">
-          <Calculadora />
+          <HorasLaboradas />
         </v-col>
 
+        <v-col cols="12" md="12" sm="12" lg="12" xl="12">
+          <Calculadora />
+        </v-col>
         <v-col cols="12" md="12" sm="12" lg="12" xl="12">
           <div>
             <v-data-table
@@ -269,6 +272,7 @@ import { Timestamp } from "../../firebase";
 import Informacion from "../components/Informacion.vue";
 import Colilla from "../components/Colilla.vue";
 import Calculadora from "../components/Calculadora.vue";
+import HorasLaboradas from "../components/HorasLaboradas.vue"
 
 export default {
   name: "Empleado",
@@ -276,7 +280,9 @@ export default {
     Informacion,
     Colilla,
     Calculadora,
-  },
+    HorasLaboradas,
+    HorasLaboradas
+},
   data() {
     return {
       id: this.$route.params.id,
