@@ -43,6 +43,7 @@ const editarEmpleado = (context, empleado) => {
       tipo_colaborador: empleado.tipo_colaborador,
       ultima_liquidacion: empleado.ultima_liquidacion,
       ultima_liquidacion_vacaciones: empleado.ultima_liquidacion_vacaciones,
+      archive: empleado.archive,
     })
     .then(() => {});
 };
@@ -58,6 +59,7 @@ const agregarEmpleado = (context, empleado) => {
       tipo_colaborador: empleado.tipo_colaborador,
       ultima_liquidacion: empleado.ultima_liquidacion,
       ultima_liquidacion_vacaciones: empleado.ultima_liquidacion_vacaciones,
+      archive: false,
     })
     .then((doc) => {});
 };

@@ -21,6 +21,13 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
+    path: "/archivados",
+    name: "Archivados",
+    component: () =>
+      import("../views/PlanillaArchive.vue"),
+    meta: { requiresAuth: true },
+  },
+  {
     path: '/',
     redirect: '/planilla',
     meta: { requiresAuth: true },

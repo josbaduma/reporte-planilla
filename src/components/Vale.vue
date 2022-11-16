@@ -351,7 +351,7 @@ export default {
             ? Timestamp.now()
             : this.empleado.ultima_liquidacion_vacaciones,
       };
-      console.log(a);
+
       this.editarEmpleado(a);
       await this.sleep(750);
       this.$router.go();
