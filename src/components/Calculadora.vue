@@ -148,7 +148,7 @@ export default {
         return 0;
       }
       return (
-        this.registrosVacaciones[0].horas * this.registrosVacaciones[0].salario_hora
+        this.registrosVacaciones[this.registrosVacaciones.length-1].horas * this.registrosVacaciones[this.registrosVacaciones.length-1].salario_hora
       );
     },
     calculateVacation() {
