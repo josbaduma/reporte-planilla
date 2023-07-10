@@ -9,7 +9,7 @@
         style="color:#000000;"
       >
         <div class="pa-0">
-          <table class="tg" id="toExcel">
+          <table class="tg" id="toExcel" data-cols-width="7,7,8,7,7,7,7,7,7,,6">
             <thead>
               <tr>
                 <th
