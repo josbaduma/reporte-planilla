@@ -101,12 +101,12 @@
                 >
                   <span style="font-weight:bolder">Tipo de Colaborador:</span>
                 </td>
-                <td data-b-a-s="thin" class="tg-0pky" colspan="3">
+                <td data-b-a-s="thin" class="tg-0pky" colspan="9">
                   <span style="font-weight:400;font-style:normal">{{
                     empleado.tipo_colaborador
                   }}</span>
                 </td>
-                <td
+                <!--<td
                   data-b-a-s="thin"
                   data-f-bold="true"
                   class="tg-0pky"
@@ -118,7 +118,7 @@
                   <span style="font-weight:400;font-style:normal">{{
                     empleado.fecha_inicio
                   }}</span>
-                </td>
+                </td>-->
               </tr>
               <tr>
                 <td
