@@ -1,6 +1,6 @@
-import firebase from 'firebase/app'
-import 'firebase/firestore'
-import 'firebase/auth'
+import { initializeApp } from "firebase/app";
+import { getFirestore, Timestamp } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBT0fmU3xwxm-PDCNgncZiZJj1qJdjuiJU",
@@ -8,13 +8,11 @@ const firebaseConfig = {
   projectId: "planilla-9d5be",
   storageBucket: "planilla-9d5be.appspot.com",
   messagingSenderId: "466808937834",
-  appId: "1:466808937834:web:d3cf70ce6328a52ae79913"
+  appId: "1:466808937834:web:d3cf70ce6328a52ae79913",
 };
 
-firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
 
-const db = firebase.firestore()
-const auth = firebase.auth()
-const Timestamp = firebase.firestore.Timestamp;
-
-export { firebase, Timestamp, db, auth }
+export { app, db, auth, Timestamp };

@@ -1,70 +1,120 @@
 <template>
-  <v-layout justify-center mt-5>
-    <v-flex xs12 sm8 md6 xl4>
+  <v-row justify="center" class="mt-5">
+    <v-col cols="12" sm="8" md="6" xl="4">
       <v-card>
-        <v-card-text class="info display-1 text-uppercase white--text text-xs-center">
-          <span>Ingreso</span>
-        </v-card-text>
+        <v-card-item class="bg-info mb-4">
+          <v-card-title class="text-uppercase text-center" dark>
+            <span>Ingreso</span>
+          </v-card-title>
+        </v-card-item>
         <v-card-text>
-          <v-form class="mb-3">
+          <v-form @submit.prevent="onSubmit" validate-on="input,blur">
             <v-text-field
               label="Usuario"
-              type="text"
-              v-model="$v.username.$model"
-              class="form-control my-2"
+              v-model="username"
+              :error-messages="usernameErrors"
               placeholder="Ingrese su usuario"
+              required
+              density="comfortable"
+              variant="outlined"
+              autocomplete="username"
             />
-
-            <small class="text-danger d-block" v-if="!$v.username.email">Correo no válido</small>
-            <small class="text-danger d-block" v-if="!$v.username.required">Campo Requerido</small>
-            <small class="text-danger d-block" v-if="!$v.username.minLength">Mínimo 6 carácteres</small>
-
             <v-text-field
               label="Contraseña"
+              v-model="pass"
+              :error-messages="passErrors"
               type="password"
-              v-model="$v.pass.$model"
-              class="form-control my-2"
               placeholder="Ingrese su contraseña"
+              required
+              density="comfortable"
+              variant="outlined"
+              autocomplete="current-password"
             />
-
-            <small class="text-danger d-block" v-if="!$v.pass.required">Campo Requerido</small>
-            <small class="text-danger d-block" v-if="!$v.pass.minLength">Mínimo 6 carácteres</small>
-
             <v-btn
-              @click="ingresoUsuario({email:$v.username.$model,pass:$v.pass.$model})"
+              type="submit"
               color="secondary"
-              :disabled="$v.$invalid"
-            >Acceder</v-btn>
+              :disabled="v$.$invalid"
+              class="mt-3"
+              block
+            >
+              Acceder
+            </v-btn>
           </v-form>
-          <p class="red--text" v-if="error === 'auth/user-not-found'">Usuario incorrecto</p>
-          <p class="red--text" v-if="error === 'auth/wrong-password'">Contraseña incorrecta</p>
-          <p class="red--text" v-if="error === 'auth/admin-permission'">El usuario no tiene permisos de administrador.</p>
+          <v-alert
+            v-if="error === 'auth/user-not-found'"
+            type="error"
+            class="mt-3"
+            dense
+          >
+            Usuario incorrecto
+          </v-alert>
+          <v-alert
+            v-if="error === 'auth/wrong-password'"
+            type="error"
+            class="mt-3"
+            dense
+          >
+            Contraseña incorrecta
+          </v-alert>
+          <v-alert
+            v-if="error === 'auth/admin-permission'"
+            type="error"
+            class="mt-3"
+            dense
+          >
+            El usuario no tiene permisos de administrador.
+          </v-alert>
         </v-card-text>
       </v-card>
-    </v-flex>
-  </v-layout>
+    </v-col>
+  </v-row>
 </template>
 
-<script>
-import { mapActions, mapState } from "vuex";
-import { required, minLength, email } from "vuelidate/lib/validators";
-export default {
-  name: "Login",
-  data() {
-    return {
-      username: "",
-      pass: "",
-    };
-  },
-  methods: {
-    ...mapActions(["ingresoUsuario"]),
-  },
-  computed: {
-    ...mapState(["error"]),
-  },
-  validations: {
-    username: { required, email, minLength: minLength(6) },
-    pass: { required, minLength: minLength(6) },
-  },
+<script setup>
+import { ref, computed } from "vue";
+import useVuelidate from "@vuelidate/core";
+import { required, minLength, email } from "@vuelidate/validators";
+import { useStore } from "vuex";
+
+const store = useStore();
+const username = ref("");
+const pass = ref("");
+
+const rules = {
+  username: { required, email, minLength: minLength(6) },
+  pass: { required, minLength: minLength(6) },
 };
+
+const v$ = useVuelidate(rules, { username, pass });
+
+const error = computed(() => store.state.error);
+
+const usernameErrors = computed(() => {
+  const errors = [];
+  if (!v$.value.username.required) errors.push("Campo requerido");
+  if (!v$.value.username.email) errors.push("Correo no válido");
+  if (!v$.value.username.minLength) errors.push("Mínimo 6 caracteres");
+  return errors;
+});
+
+const passErrors = computed(() => {
+  const errors = [];
+  if (!v$.value.pass.required) errors.push("Campo requerido");
+  if (!v$.value.pass.minLength) errors.push("Mínimo 6 caracteres");
+  return errors;
+});
+
+function onSubmit() {
+  v$.value.$touch();
+  if (!v$.value.$invalid) {
+    try {
+      store.dispatch("ingresoUsuario", {
+        email: username.value,
+        pass: pass.value,
+      });
+    } catch (err) {
+      console.error("Error en ingresoUsuario:", err);
+    }
+  }
+}
 </script>

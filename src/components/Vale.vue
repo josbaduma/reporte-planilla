@@ -1,18 +1,31 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12" ref="document" id="liquidacion-impreso" class="pa-0" style="color:#000000;">
+      <v-col
+        cols="12"
+        ref="document"
+        id="liquidacion-impreso"
+        class="pa-0"
+        style="color: #000000"
+      >
         <div class="pa-0">
           <table class="tg" id="tableLiquidacion">
             <thead>
               <tr>
-                <th data-height="32" data-f-sz="16" data-b-a-s="thin" data-f-bold="true" data-a-wrap="true"
-                  class="tg-eqm3" colspan="12">
-                  <span style="font-weight: bold">Pago de
-                    {{
-                        vacaciones === undefined ? "Aguinaldo" : "Vacaciones"
-                    }}
-                    2021</span>
+                <th
+                  data-height="32"
+                  data-f-sz="16"
+                  data-b-a-s="thin"
+                  data-f-bold="true"
+                  data-a-wrap="true"
+                  class="tg-eqm3"
+                  colspan="12"
+                >
+                  <span style="font-weight: bold"
+                    >Pago de
+                    {{ vacaciones === undefined ? "Aguinaldo" : "Vacaciones" }}
+                    2021</span
+                  >
                 </th>
                 <!-- <th
                   data-b-a-s="thin"
@@ -73,74 +86,159 @@
                 <td data-b-a-s="thin" class="tg-0pky" colspan="3">
                   {{ empleado.cedula }}
                 </td> -->
-                <td data-b-a-s="thin" data-f-bold="true" class="tg-0pky" colspan="3">
+                <td
+                  data-b-a-s="thin"
+                  data-f-bold="true"
+                  class="tg-0pky"
+                  colspan="3"
+                >
                   <span style="font-weight: bold">Nombre:</span>
                 </td>
                 <td data-b-a-s="thin" class="tg-0pky" colspan="9">
-                  <span style="font-weight: 400; font-style: normal">{{ empleado.nombre }} {{ empleado.apellidos
-                  }}</span>
+                  <span style="font-weight: 400; font-style: normal"
+                    >{{ empleado.nombre }} {{ empleado.apellidos }}</span
+                  >
                 </td>
               </tr>
               <tr>
-                <td data-b-a-s="thin" data-f-bold="true" class="tg-0pky" colspan="3">
+                <td
+                  data-b-a-s="thin"
+                  data-f-bold="true"
+                  class="tg-0pky"
+                  colspan="3"
+                >
                   <span style="font-weight: bold">Puesto:</span>
                 </td>
                 <td data-b-a-s="thin" class="tg-0pky" colspan="3">
                   <span style="font-weight: 400; font-style: normal">{{
-                      empleado.puesto
+                    empleado.puesto
                   }}</span>
                 </td>
-                <td data-b-a-s="thin" data-f-bold="true" class="tg-0pky" colspan="3">
+                <td
+                  data-b-a-s="thin"
+                  data-f-bold="true"
+                  class="tg-0pky"
+                  colspan="3"
+                >
                   <span style="font-weight: bolder">Tipo de Colaborador:</span>
                 </td>
                 <td data-b-a-s="thin" class="tg-0pky" colspan="3">
                   <span style="font-weight: 400; font-style: normal">{{
-                      empleado.tipo_colaborador
+                    empleado.tipo_colaborador
                   }}</span>
                 </td>
               </tr>
               <tr>
-                <td data-b-a-s="thin" data-f-bold="true" class="tg-0pky" colspan="3">
-                  <span style="font-weight: 700; font-style: normal">Horas Laboradas:</span>
+                <td
+                  data-b-a-s="thin"
+                  data-f-bold="true"
+                  class="tg-0pky"
+                  colspan="3"
+                >
+                  <span style="font-weight: 700; font-style: normal"
+                    >Horas Laboradas:</span
+                  >
                 </td>
                 <td data-b-a-s="thin" class="tg-0pky" colspan="9">
                   <span style="font-weight: 400; font-style: normal">{{
-                      calcHours
+                    calcHours
                   }}</span>
                 </td>
               </tr>
               <tr>
-                <td v-if="vacaciones === undefined" data-b-a-s="thin" data-f-bold="true" class="tg-0pky" colspan="3">
-                  <span style="font-weight: 700; font-style: normal">Aguinaldo:</span>
+                <td
+                  v-if="vacaciones === undefined"
+                  data-b-a-s="thin"
+                  data-f-bold="true"
+                  class="tg-0pky"
+                  colspan="3"
+                >
+                  <span style="font-weight: 700; font-style: normal"
+                    >Aguinaldo:</span
+                  >
                 </td>
-                <td v-if="vacaciones === undefined" data-b-a-s="thin" class="tg-0pky" colspan="9">
+                <td
+                  v-if="vacaciones === undefined"
+                  data-b-a-s="thin"
+                  class="tg-0pky"
+                  colspan="9"
+                >
                   <span style="font-weight: 400; font-style: normal">{{
-                      aguinaldo
+                    aguinaldo
                   }}</span>
                 </td>
-                <td v-if="aguinaldo === undefined" data-b-a-s="thin" data-f-bold="true" class="tg-0pky" colspan="3">
-                  <span style="font-weight: 700; font-style: normal">Vacaciones:</span>
+                <td
+                  v-if="aguinaldo === undefined"
+                  data-b-a-s="thin"
+                  data-f-bold="true"
+                  class="tg-0pky"
+                  colspan="3"
+                >
+                  <span style="font-weight: 700; font-style: normal"
+                    >Vacaciones:</span
+                  >
                 </td>
-                <td v-if="aguinaldo === undefined" data-b-a-s="thin" class="tg-0pky" colspan="9">
+                <td
+                  v-if="aguinaldo === undefined"
+                  data-b-a-s="thin"
+                  class="tg-0pky"
+                  colspan="9"
+                >
                   <span style="font-weight: 400; font-style: normal">{{
-                      vacaciones
+                    vacaciones
                   }}</span>
                 </td>
               </tr>
               <tr data-height="32">
-                <td data-b-a-s="thin" data-a-wrap="true" data-a-v="top" class="tg-0pky" colspan="3" rowspan="2">
-                  <span style="font-weight:700;font-style:normal">Firma del colaborador:</span>
+                <td
+                  data-b-a-s="thin"
+                  data-a-wrap="true"
+                  data-a-v="top"
+                  class="tg-0pky"
+                  colspan="3"
+                  rowspan="2"
+                >
+                  <span style="font-weight: 700; font-style: normal"
+                    >Firma del colaborador:</span
+                  >
                 </td>
-                <td data-b-a-s="thin" data-a-wrap="true" class="tg-0pky" colspan="3" rowspan="2"></td>
-                <td data-b-t-s="thin" data-b-l-s="thin" data-b-r-s="thin" data-a-wrap="true" data-a-v="top"
-                  class="tg-0pky" colspan="3">
+                <td
+                  data-b-a-s="thin"
+                  data-a-wrap="true"
+                  class="tg-0pky"
+                  colspan="3"
+                  rowspan="2"
+                ></td>
+                <td
+                  data-b-t-s="thin"
+                  data-b-l-s="thin"
+                  data-b-r-s="thin"
+                  data-a-wrap="true"
+                  data-a-v="top"
+                  class="tg-0pky"
+                  colspan="3"
+                >
                   <b>Firma del empleador:</b>
                 </td>
-                <td data-b-a-s="thin" data-a-wrap="true" class="tg-0pky" colspan="3" rowspan="2"></td>
+                <td
+                  data-b-a-s="thin"
+                  data-a-wrap="true"
+                  class="tg-0pky"
+                  colspan="3"
+                  rowspan="2"
+                ></td>
               </tr>
               <tr>
-                <td data-b-b-s="thin" data-b-l-s="thin" data-b-r-s="thin" class="tg-0lax" colspan="3">
-                  <span style="font-weight:400;font-style:normal">Alejandro León Villegas</span>
+                <td
+                  data-b-b-s="thin"
+                  data-b-l-s="thin"
+                  data-b-r-s="thin"
+                  class="tg-0lax"
+                  colspan="3"
+                >
+                  <span style="font-weight: 400; font-style: normal"
+                    >Alejandro León Villegas</span
+                  >
                 </td>
               </tr>
             </tbody>
@@ -149,13 +247,18 @@
       </v-col>
 
       <v-col cols="12">
-        <v-btn color="primary" @click="
-          exportTableToExcel(
-            'tableLiquidacion',
-            `${hoy}-liquidacion-${vacaciones === undefined ? 'aguinaldo' : 'vacaciones'
-            }-${empleado.nombre}`
-          )
-        ">Exportar a Excel</v-btn>
+        <v-btn
+          color="primary"
+          @click="
+            exportTableToExcel(
+              'tableLiquidacion',
+              `${hoy}-liquidacion-${
+                vacaciones === undefined ? 'aguinaldo' : 'vacaciones'
+              }-${empleado.nombre}`
+            )
+          "
+          >Exportar a Excel</v-btn
+        >
         <v-btn color="primary" class="ml-4" @click="liquidar">Liquidar</v-btn>
       </v-col>
     </v-row>
@@ -163,7 +266,9 @@
 </template>
 
 <script>
-import html2pdf from "html2pdf.js";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+import * as XLSX from "xlsx";
 import { mapActions, mapState } from "vuex";
 import moment from "moment";
 import _ from "lodash";
@@ -188,35 +293,30 @@ export default {
         this.vacaciones === undefined
           ? this.registros
           : this.registrosVacaciones,
-        (sum, n) => {
-          return sum + n.horas;
-        },
+        (sum, n) => sum + n.horas,
         0
       );
     },
   },
   methods: {
     ...mapActions(["editarEmpleado"]),
-    exportToPDF() {
-      const a = document.getElementById("liquidacion-impreso");
-      html2pdf(a, {
-        margin: 0,
-        filename: `${this.hoy}-liquidacion-${this.empleado.nombre}.pdf`,
-        image: { type: "jpeg", quality: 0.98 },
-        html2canvas: { dpi: 192, letterRendering: true, removeContainer: true },
-        jsPDF: { unit: "in", format: [12, 2.835], orientation: "landscape" },
+    async exportToPDF() {
+      const element = document.getElementById("liquidacion-impreso");
+      const canvas = await html2canvas(element);
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({
+        orientation: "landscape",
+        unit: "pt",
+        format: [canvas.width, canvas.height],
       });
+      pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
+      pdf.save(`${this.hoy}-liquidacion-${this.empleado.nombre}.pdf`);
     },
     exportTableToExcel(tableID, filename = "") {
       filename = filename ? filename + ".xlsx" : "excel_data.xlsx";
-
-      let table = document.getElementById(tableID);
-      TableToExcel.convert(table, {
-        name: filename,
-        sheet: {
-          name: "Recibo Empleado",
-        },
-      });
+      const table = document.getElementById(tableID);
+      const wb = XLSX.utils.table_to_book(table, { sheet: "Recibo Empleado" });
+      XLSX.writeFile(wb, filename);
     },
     convertMoney(value) {
       const formatterPeso = new Intl.NumberFormat("es-CR", {
@@ -224,9 +324,7 @@ export default {
         currency: "CRC",
         minimumFractionDigits: 0,
       });
-      let valueFinal = formatterPeso.format(value);
-
-      return valueFinal;
+      return formatterPeso.format(value);
     },
     async liquidar() {
       try {
@@ -235,7 +333,9 @@ export default {
           cedula: this.empleado.cedula,
           nombre: this.empleado.nombre,
           apellidos: this.empleado.apellidos,
-          fecha_inicio: Timestamp.fromDate(new Date(this.empleado.fecha_inicio)),
+          fecha_inicio: Timestamp.fromDate(
+            new Date(this.empleado.fecha_inicio)
+          ),
           tipo_colaborador: this.empleado.tipo_colaborador,
           puesto: this.empleado.puesto,
           ultima_liquidacion:
@@ -248,14 +348,11 @@ export default {
               : this.empleado.ultima_liquidacion_vacaciones,
           archive: this.empleado.archive,
         };
-        console.log(a);
         this.editarEmpleado(a);
         await this.sleep(750);
         this.$router.go();
       } catch (error) {
         console.error(error);
-      } finally {
-        //this.$router.go();
       }
     },
     sleep(ms) {
@@ -265,6 +362,4 @@ export default {
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

@@ -1,5 +1,4 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import { createStore } from "vuex";
 import _ from "lodash";
 import { Timestamp } from "../../firebase";
 
@@ -7,9 +6,7 @@ import actions from "./Actions";
 import getters from "./Getters";
 import mutations from "./Mutations";
 
-Vue.use(Vuex);
-
-export default new Vuex.Store({
+export default createStore({
   state: {
     usuario: null,
     error: null,

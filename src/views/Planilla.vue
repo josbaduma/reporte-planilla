@@ -2,86 +2,152 @@
   <v-layout>
     <v-container class="grey lighten-5">
       <v-row>
-        <v-col cols="12" md="12" sm="12" lg="12" xl="12">
+        <v-col cols="12">
           <h3>Planilla Restaurante Fogoncito</h3>
         </v-col>
-        <v-col cols="12" md="12" sm="12" lg="12" xl="12">
+        <v-col cols="12">
           <div>
-            <v-data-table :headers="headers" :items="planilla" sort-by="cedula" class="elevation-1 overflow-div"
-              :page.sync="page" :items-per-page="10" hide-default-footer @page-count="pageCount = $event">
-              <template v-slot:top>
+            <v-data-table
+              :headers="headers"
+              :items="planilla"
+              :sort-by="['cedula']"
+              class="elevation-1 overflow-div"
+              v-model:page="page"
+              :items-per-page="10"
+              :hide-default-footer="true"
+              @update:page-count="pageCount = $event"
+            >
+              <template #top>
                 <v-toolbar flat color="white">
                   <v-toolbar-title>Empleados</v-toolbar-title>
                   <v-divider class="mx-4" inset vertical></v-divider>
                   <v-spacer></v-spacer>
                   <v-dialog v-model="dialog" max-width="720px">
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn color="primary" dark class="mb-2 mr-3" v-bind="attrs" v-on="on">Nuevo Empleado</v-btn>
-                      <v-btn color="blue-grey darken-1" outlined dark class="mb-2 mr-3" to="/archivados">Archivados
-                      </v-btn>
+                    <template #activator="{ props }">
+                      <v-btn
+                        color="primary"
+                        variant="outlined"
+                        class="mb-2 mr-3"
+                        v-bind="props"
+                        >Nuevo Empleado</v-btn
+                      >
+                      <v-btn
+                        color="secondary"
+                        variant="outlined"
+                        class="mb-2 mr-3"
+                        to="/archivados"
+                        >Archivados</v-btn
+                      >
                     </template>
                     <v-card>
                       <v-card-title>
                         <span class="headline">{{ formTitle }}</span>
                       </v-card-title>
-
                       <v-card-text>
                         <v-container>
                           <v-row>
                             <v-col cols="12" sm="6" md="4">
-                              <v-text-field v-model="editedItem.cedula" label="Cédula"></v-text-field>
+                              <v-text-field
+                                v-model="editedItem.id"
+                                label="Id"
+                              ></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
-                              <v-text-field v-model="editedItem.nombre" label="Nombre"></v-text-field>
+                              <v-text-field
+                                v-model="editedItem.cedula"
+                                label="Cédula"
+                              ></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
-                              <v-text-field v-model="editedItem.apellidos" label="Apellidos"></v-text-field>
+                              <v-text-field
+                                v-model="editedItem.nombre"
+                                label="Nombre"
+                              ></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
-                              <v-menu ref="menu" v-model="menu" :close-on-content-click="false"
-                                :return-value.sync="editedItem.fecha_inicio" transition="scale-transition" offset-y
-                                min-width="auto">
-                                <template v-slot:activator="{ on, attrs }">
-                                  <v-text-field v-model="editedItem.fecha_inicio" label="Fecha de Ingreso" readonly
-                                    v-bind="attrs" v-on="on"></v-text-field>
+                              <v-text-field
+                                v-model="editedItem.apellidos"
+                                label="Apellidos"
+                              ></v-text-field>
+                            </v-col>
+                            <v-col cols="12" sm="6" md="4">
+                              <v-menu
+                                v-model="menu"
+                                :close-on-content-click="false"
+                                transition="scale-transition"
+                                offset-y
+                              >
+                                <template #activator="{ props }">
+                                  <v-text-field
+                                    v-model="editedItem.fecha_inicio"
+                                    label="Fecha de Ingreso"
+                                    readonly
+                                    v-bind="props"
+                                  ></v-text-field>
                                 </template>
-                                <v-date-picker v-model="editedItem.fecha_inicio" no-title scrollable>
+                                <v-date-picker
+                                  v-model="editedItem.fecha_inicio"
+                                  scrollable
+                                >
                                   <v-spacer></v-spacer>
-                                  <v-btn text color="primary" @click="menu = false">
-                                    Cancel
-                                  </v-btn>
-                                  <v-btn text color="primary" @click="
-                                    $refs.menu.save(editedItem.fecha_inicio)
-                                  ">
-                                    OK
-                                  </v-btn>
+                                  <v-btn
+                                    variant="text"
+                                    color="primary"
+                                    @click="menu = false"
+                                    >Cancelar</v-btn
+                                  >
+                                  <v-btn
+                                    variant="text"
+                                    color="primary"
+                                    @click="menu = false"
+                                    >OK</v-btn
+                                  >
                                 </v-date-picker>
                               </v-menu>
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
-                              <v-text-field v-model="editedItem.tipo_colaborador" label="Tipo de Colaborador">
-                              </v-text-field>
+                              <v-text-field
+                                v-model="editedItem.tipo_colaborador"
+                                label="Tipo de Colaborador"
+                              ></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="4">
-                              <v-text-field v-model="editedItem.puesto" label="Puesto"></v-text-field>
+                              <v-text-field
+                                v-model="editedItem.puesto"
+                                label="Puesto"
+                              ></v-text-field>
                             </v-col>
                           </v-row>
                         </v-container>
                       </v-card-text>
-
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
-                        <v-btn color="blue darken-1" text @click="save">Guardar</v-btn>
+                        <v-btn color="blue" variant="text" @click="close"
+                          >Cancelar</v-btn
+                        >
+                        <v-btn color="blue" variant="text" @click="save"
+                          >Guardar</v-btn
+                        >
                       </v-card-actions>
                     </v-card>
                   </v-dialog>
                 </v-toolbar>
               </template>
-              <template v-slot:[`item.actions`]="{ item }">
-                <v-btn class="mr-4" outlined color="teal lighten-1" @click="archiveEmployee(item)">Archivar</v-btn>
-                <v-icon class="mr-2" color="blue-grey darken-1" @click="goEmployeePage(item)">fas fa-arrow-circle-right
-                </v-icon>
+              <template #item.actions="{ item }">
+                <v-btn
+                  class="mr-4"
+                  variant="outlined"
+                  color="teal"
+                  @click="archiveEmployee(item)"
+                  >Archivar</v-btn
+                >
+                <v-icon
+                  class="mr-2"
+                  color="blue-grey"
+                  icon="fas fa-arrow-circle-right"
+                  size="large"
+                  @click="goEmployeePage(item)"
+                ></v-icon>
               </template>
             </v-data-table>
             <div class="text-center pt-2">
@@ -91,14 +157,12 @@
         </v-col>
       </v-row>
     </v-container>
-
     <v-snackbar v-model="snackbar" :timeout="duration">
-      {{ error }}
-
-      <template v-slot:action="{ attrs }">
-        <v-btn color="blue" text v-bind="attrs" @click="snackbar = false">
-          Close
-        </v-btn>
+      {{ localError }}
+      <template #actions>
+        <v-btn color="blue" variant="text" @click="snackbar = false"
+          >Cerrar</v-btn
+        >
       </template>
     </v-snackbar>
   </v-layout>
@@ -108,6 +172,7 @@
 import { mapState, mapActions } from "vuex";
 import { Timestamp } from "../../firebase";
 import router from "../router";
+import _ from "lodash";
 
 export default {
   name: "Planilla",
@@ -139,12 +204,9 @@ export default {
     },
     snackbar: false,
     duration: 4000,
+    localError: "", // propiedad local para el mensaje
     headers: [
-      {
-        text: "Cédula",
-        align: "start",
-        value: "cedula",
-      },
+      { text: "Cédula", align: "start", value: "cedula" },
       { text: "Nombre", value: "nombre", sortable: false },
       { text: "Apellidos", value: "apellidos", sortable: false },
       { text: "Fecha de Ingreso", value: "fecha_inicio", sortable: false },
@@ -152,7 +214,12 @@ export default {
     ],
   }),
   created() {
-    this.getPlanilla(false);
+    try {
+      this.getPlanilla(false);
+    } catch (err) {
+      this.snackbar = true;
+      this.localError = err.message || "Error al cargar la planilla";
+    }
   },
   watch: {
     dialog(val) {
@@ -165,6 +232,7 @@ export default {
       return this.editedIndex === -1 ? "Nuevo Item" : "Editar Item";
     },
     calculateAguinaldo() {
+      if (!this.registros || !Array.isArray(this.registros)) return 0;
       const a = _.reduce(
         this.registros,
         function (sum, n) {
@@ -178,19 +246,27 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["getPlanilla", "agregarEmpleado", "eliminarEmpleado", "editarEmpleado"]),
+    ...mapActions([
+      "getPlanilla",
+      "agregarEmpleado",
+      "eliminarEmpleado",
+      "editarEmpleado",
+    ]),
     convertMoney(value) {
       const formatterPeso = new Intl.NumberFormat("es-CR", {
         style: "currency",
         currency: "CRC",
         minimumFractionDigits: 2,
       });
-      let valueFinal = formatterPeso.format(value);
-
-      return valueFinal;
+      return formatterPeso.format(value);
     },
     goEmployeePage(item) {
-      router.push({ name: "Empleado", params: { id: item.id } });
+      if (item && item.id) {
+        router.push({ name: "Empleado", params: { id: item.id } });
+      } else {
+        this.snackbar = true;
+        this.localError = "El empleado no tiene un ID válido.";
+      }
     },
     close() {
       this.dialog = false;
@@ -204,21 +280,22 @@ export default {
         new Date(this.editedItem.fecha_inicio)
       );
       this.editedItem.ultima_liquidacion = this.editedItem.fecha_inicio;
-      this.editedItem.ultima_liquidacion_vacaciones = this.editedItem.fecha_inicio;
+      this.editedItem.ultima_liquidacion_vacaciones =
+        this.editedItem.fecha_inicio;
 
       if (this.editedIndex > -1) {
-        console.log("Editar");
+        // Editar empleado
       } else {
         this.agregarEmpleado(this.editedItem);
-        console.log("Liquidación:" + this.editedIndex.ultima_liquidacion);
       }
       this.close();
     },
     archiveEmployee(employee) {
       employee.fecha_inicio = Timestamp.fromDate(
-        new Date(employee.fecha_inicio));
+        new Date(employee.fecha_inicio)
+      );
       employee.archive = true;
-      this.editarEmpleado(employee)
+      this.editarEmpleado(employee);
     },
   },
 };

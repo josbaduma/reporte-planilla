@@ -1,8 +1,16 @@
 <template>
   <v-app id="inspire">
-    <nav>
-      <v-app-bar id="top-bar" app dark>
+    <v-layout>
+      <v-app-bar
+        id="top-bar"
+        app
+        color="secondary"
+        density="compact"
+        dark
+        class="px-4 py-2"
+      >
         <v-app-bar-nav-icon
+          variant="text"
           @click.stop="drawer = !drawer"
           v-if="!mobile"
         ></v-app-bar-nav-icon>
@@ -11,11 +19,10 @@
             alt="Restaurante Logo"
             class="shrink mr-2"
             contain
-            src="./assets/logo.jpg"
+            :src="logo"
             transition="scale-transition"
             width="40"
           />
-
           <h3 id="title-restaurante">Restaurante Fogoncito</h3>
         </div>
       </v-app-bar>
@@ -24,10 +31,10 @@
         v-model="drawer"
         v-if="existeUsuario"
         app
-        :mini-variant.sync="mobile"
-        :expand-on-hover="mobile"
+        :mini-variant.sync="!mobile"
+        :expand-on-hover="!mobile"
         :permanent="mobile"
-        dark
+        theme="dark"
       >
         <v-img
           :aspect-ratio="16 / 9"
@@ -37,86 +44,69 @@
             <v-col>
               <v-list dense nav class="py-0">
                 <v-list-item two-line :class="mobile && 'px-0'">
-                  <v-list-item-avatar>
-                    <v-icon dark large>fa fa-user-circle</v-icon>
-                  </v-list-item-avatar>
-
-                  <v-list-item-content>
-                    <v-list-item-title>{{ usuario.nombre }}</v-list-item-title>
-                    <v-list-item-subtitle>{{
-                      usuario.email
-                    }}</v-list-item-subtitle>
-                    <v-list-item-subtitle>Administrador</v-list-item-subtitle>
-                  </v-list-item-content>
+                  <template #prepend>
+                    <v-icon dark size="large">fa fa-user-circle</v-icon>
+                  </template>
+                  <template #title>
+                    {{ usuario.nombre }}
+                  </template>
+                  <template #subtitle>
+                    {{ usuario.email }}<br />
+                    Administrador
+                  </template>
                 </v-list-item>
               </v-list>
             </v-col>
           </v-row>
         </v-img>
-        <v-list dark>
-          <v-list-item link :to="{ name: 'Planilla', params: { id: 1 } }">
-            <v-list-item-action>
-              <v-icon>fa fa-home</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Inicio</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item class="mt-15" @click="cerrarSesion" v-if="existeUsuario">
-            <v-list-item-action>
-              <v-icon>fas fa-external-link-alt</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Cerrar Sesión</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
+        <v-list theme="dark" color="black" nav dense>
+          <v-list-item
+            link
+            :to="{ name: 'Planilla', params: { id: 1 } }"
+            prepend-icon="fa fa-home"
+            title="Inicio"
+          ></v-list-item>
         </v-list>
+        <template v-slot:append>
+          <div class="pa-2">
+            <v-btn block @click="cerrarSesion" v-if="existeUsuario">
+              <v-icon icon="fas fa-external-link-alt"></v-icon>
+              Cerrar Sesión
+            </v-btn>
+          </div>
+        </template>
       </v-navigation-drawer>
-    </nav>
-    <v-main>
-      <router-view color="blue-grey lighten-1" :key="$route.fullPath"/>
-    </v-main>
+      <v-main>
+        <router-view color="blue-grey lighten-1" :key="$route.fullPath" />
+      </v-main>
+    </v-layout>
   </v-app>
 </template>
 
-<script>
-import { mapActions, mapGetters, mapState } from "vuex";
-export default {
-  name: "App",
-  props: {
-    source: String,
-  },
-  data: () => ({
-    drawer: true,
-  }),
-  methods: {
-    ...mapActions(["cerrarSesion"]),
-  },
-  computed: {
-    ...mapGetters(["existeUsuario"]),
-    ...mapState(["usuario"]),
-    mobile: {
-      get() {
-        switch (this.$vuetify.breakpoint.name) {
-          case "xs":
-            return false;
-          case "sm":
-            return false;
-          case "md":
-            return true;
-          case "lg":
-            return true;
-          case "xl":
-            return true;
-        }
-      },
-      set(newName) {
-        return newName;
-      },
-    },
-  },
-};
+<script setup>
+import { ref, computed } from "vue";
+import { useStore } from "vuex";
+import { useDisplay } from "vuetify";
+import logo from "./assets/logo.jpg";
+
+// Store
+const store = useStore();
+const existeUsuario = computed(() => store.getters.existeUsuario);
+const usuario = computed(() => store.state.usuario);
+
+// Vuetify breakpoint
+const { mdAndUp } = useDisplay();
+const mobile = computed(() => mdAndUp.value);
+
+// Drawer
+const drawer = ref(true);
+
+// Métodos
+function cerrarSesion() {
+  store.dispatch("cerrarSesion");
+}
 </script>
+
 <style>
 .v-list .v-list-item--active {
   color: whitesmoke !important;

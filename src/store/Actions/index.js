@@ -1,14 +1,32 @@
+import {
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+} from "firebase/auth";
+import {
+  collection,
+  doc,
+  query,
+  where,
+  orderBy,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  onSnapshot,
+  getFirestore,
+} from "firebase/firestore";
 import router from "../../router";
 import { auth, db, Timestamp } from "../../../firebase";
 
 /* ------------------ Planilla General --------------------------------- */
 const getPlanilla = (context, archive) => {
-  db.collection("planilla").where("archive", "==", archive).onSnapshot((querySnapshot) => {
+  const q = query(collection(db, "planilla"), where("archive", "==", archive));
+  onSnapshot(q, (querySnapshot) => {
     const planilla = [];
-    querySnapshot.forEach((doc) => {
-      let dato = doc.data();
+    querySnapshot.forEach((docSnap) => {
+      let dato = docSnap.data();
       let date = dato.fecha_inicio.toDate();
-      dato.id = doc.id;
+      dato.id = docSnap.id;
       dato.fecha_inicio = date.toISOString().substr(0, 10);
       planilla.push(dato);
     });
@@ -18,199 +36,189 @@ const getPlanilla = (context, archive) => {
 
 /* ------------------- Funciones del Empleado ---------------------------- */
 const getEmpleado = (context, id) => {
-  db.collection("planilla")
-    .doc(id)
-    .onSnapshot((doc) => {
-      let empleado = doc.data();
-      empleado.fecha_inicio = empleado.fecha_inicio
-        .toDate()
-        .toISOString()
-        .substr(0, 10);
-      empleado.id = doc.id;
-      context.commit("setEmpleado", empleado);
-    });
+  const docRef = doc(db, "planilla", id);
+  onSnapshot(docRef, (docSnap) => {
+    let empleado = docSnap.data();
+    empleado.fecha_inicio = empleado.fecha_inicio
+      .toDate()
+      .toISOString()
+      .substr(0, 10);
+    empleado.id = docSnap.id;
+    context.commit("setEmpleado", empleado);
+  });
 };
 
 const editarEmpleado = (context, empleado) => {
-  db.collection("planilla")
-    .doc(empleado.id)
-    .update({
-      cedula: empleado.cedula,
-      nombre: empleado.nombre,
-      apellidos: empleado.apellidos,
-      fecha_inicio: empleado.fecha_inicio,
-      puesto: empleado.puesto,
-      tipo_colaborador: empleado.tipo_colaborador,
-      ultima_liquidacion: empleado.ultima_liquidacion,
-      ultima_liquidacion_vacaciones: empleado.ultima_liquidacion_vacaciones,
-      archive: empleado.archive,
-    })
-    .then(() => {});
+  const docRef = doc(db, "planilla", empleado.id);
+  updateDoc(docRef, {
+    cedula: empleado.cedula,
+    nombre: empleado.nombre,
+    apellidos: empleado.apellidos,
+    fecha_inicio: empleado.fecha_inicio,
+    puesto: empleado.puesto,
+    tipo_colaborador: empleado.tipo_colaborador,
+    ultima_liquidacion: empleado.ultima_liquidacion,
+    ultima_liquidacion_vacaciones: empleado.ultima_liquidacion_vacaciones,
+    archive: empleado.archive,
+  });
 };
 
-const agregarEmpleado = (context, empleado) => {
-  db.collection("planilla")
-    .add({
-      cedula: empleado.cedula,
-      nombre: empleado.nombre,
-      apellidos: empleado.apellidos,
-      fecha_inicio: empleado.fecha_inicio,
-      puesto: empleado.puesto,
-      tipo_colaborador: empleado.tipo_colaborador,
-      ultima_liquidacion: empleado.ultima_liquidacion,
-      ultima_liquidacion_vacaciones: empleado.ultima_liquidacion_vacaciones,
-      archive: false,
-    })
-    .then((doc) => {});
+const agregarEmpleado = async (context, empleado) => {
+  await addDoc(collection(db, "planilla"), {
+    cedula: empleado.cedula,
+    nombre: empleado.nombre,
+    apellidos: empleado.apellidos,
+    fecha_inicio: empleado.fecha_inicio,
+    puesto: empleado.puesto,
+    tipo_colaborador: empleado.tipo_colaborador,
+    ultima_liquidacion: empleado.ultima_liquidacion,
+    ultima_liquidacion_vacaciones: empleado.ultima_liquidacion_vacaciones,
+    archive: false,
+  });
 };
 
-const eliminarEmpleado = ({ commit, dispatch }, id) => {
-  db.collection("planilla")
-    .doc(id)
-    .delete()
-    .then(() => {
-      context.commit("eliminarEmpleado", id);
-    });
+const eliminarEmpleado = async (context, id) => {
+  await deleteDoc(doc(db, "planilla", id));
+  context.commit("eliminarEmpleado", id);
 };
 
 /* ----------------- Funciones de Registros Empleado ---------------------- */
 const getRegistrosEmpleado = (context, id) => {
   setTimeout(() => {
     const liquidacion = context.state.empleado.ultima_liquidacion;
-    db.collection("planilla")
-      .doc(id)
-      .collection("registros")
-      .orderBy("fecha_inicio")
-      .where("fecha_inicio", ">=", liquidacion)
-      .onSnapshot((querySnapshot) => {
-        const registros = [];
-        let index = 1;
-        querySnapshot.forEach((doc) => {
-          let dato = doc.data();
-          dato.id = doc.id;
-          dato.fecha_inicio = dato.fecha_inicio
-            .toDate()
-            .toISOString()
-            .substr(0, 10);
-          dato.fecha_final = dato.fecha_final
-            .toDate()
-            .toISOString()
-            .substr(0, 10);
-          dato.index = index;
-          index++;
-          registros.push(dato);
-        });
-        return context.commit("setRegistros", registros);
+    const registrosRef = collection(db, "planilla", id, "registros");
+    const q = query(
+      registrosRef,
+      orderBy("fecha_inicio"),
+      where("fecha_inicio", ">=", liquidacion)
+    );
+    onSnapshot(q, (querySnapshot) => {
+      const registros = [];
+      let index = 1;
+      querySnapshot.forEach((docSnap) => {
+        let dato = docSnap.data();
+        dato.id = docSnap.id;
+        dato.fecha_inicio = dato.fecha_inicio
+          .toDate()
+          .toISOString()
+          .substr(0, 10);
+        dato.fecha_final = dato.fecha_final
+          .toDate()
+          .toISOString()
+          .substr(0, 10);
+        dato.index = index;
+        index++;
+        registros.push(dato);
       });
+      context.commit("setRegistros", registros);
+    });
   }, 500);
 };
 
 const getRegistrosEmpleadoVacaciones = (context, id) => {
   setTimeout(() => {
     const liquidacion = context.state.empleado.ultima_liquidacion_vacaciones;
-    db.collection("planilla")
-      .doc(id)
-      .collection("registros")
-      .orderBy("fecha_inicio")
-      .where("fecha_inicio", ">=", liquidacion)
-      .onSnapshot((querySnapshot) => {
-        const registros = [];
-        let index = 1;
-        querySnapshot.forEach((doc) => {
-          let dato = doc.data();
-          dato.id = doc.id;
-          dato.fecha_inicio = dato.fecha_inicio
-            .toDate()
-            .toISOString()
-            .substr(0, 10);
-          dato.fecha_final = dato.fecha_final
-            .toDate()
-            .toISOString()
-            .substr(0, 10);
-          dato.index = index;
-          index++;
-          registros.push(dato);
-        });
-        return context.commit("setRegistrosVacaciones", registros);
+    const registrosRef = collection(db, "planilla", id, "registros");
+    const q = query(
+      registrosRef,
+      orderBy("fecha_inicio"),
+      where("fecha_inicio", ">=", liquidacion)
+    );
+    onSnapshot(q, (querySnapshot) => {
+      const registros = [];
+      let index = 1;
+      querySnapshot.forEach((docSnap) => {
+        let dato = docSnap.data();
+        dato.id = docSnap.id;
+        dato.fecha_inicio = dato.fecha_inicio
+          .toDate()
+          .toISOString()
+          .substr(0, 10);
+        dato.fecha_final = dato.fecha_final
+          .toDate()
+          .toISOString()
+          .substr(0, 10);
+        dato.index = index;
+        index++;
+        registros.push(dato);
       });
+      context.commit("setRegistrosVacaciones", registros);
+    });
   }, 500);
 };
 
 const getAllRegistrosEmpleado = (context, id) => {
   setTimeout(() => {
-    db.collection("planilla")
-      .doc(id)
-      .collection("registros")
-      .orderBy("fecha_inicio")
-      .onSnapshot((querySnapshot) => {
-        const registros = [];
-        let index = 1;
-        querySnapshot.forEach((doc) => {
-          let dato = doc.data();
-          dato.id = doc.id;
-          dato.fecha_inicio = dato.fecha_inicio
-            .toDate()
-            .toISOString()
-            .substr(0, 10);
-          dato.fecha_final = dato.fecha_final
-            .toDate()
-            .toISOString()
-            .substr(0, 10);
-          dato.index = index;
-          index++;
-          registros.push(dato);
-        });
-        return context.commit("setAllRegistros", registros);
+    const registrosRef = collection(db, "planilla", id, "registros");
+    const q = query(registrosRef, orderBy("fecha_inicio"));
+    onSnapshot(q, (querySnapshot) => {
+      const registros = [];
+      let index = 1;
+      querySnapshot.forEach((docSnap) => {
+        let dato = docSnap.data();
+        dato.id = docSnap.id;
+        dato.fecha_inicio = dato.fecha_inicio
+          .toDate()
+          .toISOString()
+          .substr(0, 10);
+        dato.fecha_final = dato.fecha_final
+          .toDate()
+          .toISOString()
+          .substr(0, 10);
+        dato.index = index;
+        index++;
+        registros.push(dato);
       });
+      context.commit("setAllRegistros", registros);
+    });
   }, 500);
 };
 
-const agregarRegistro = (context, registro) => {
-  db.collection("planilla")
-    .doc(registro.id_empleado)
-    .collection("registros")
-    .add({
-      horas: parseFloat(registro.horas),
-      alimentacion: parseFloat(registro.alimentacion),
-      seguro: parseFloat(registro.seguro),
-      salario_hora: parseFloat(registro.salario_hora),
-      fecha_inicio: registro.fecha_inicio,
-      fecha_final: registro.fecha_final,
-      vales: parseFloat(registro.vales),
-    })
-    .then((doc) => {});
+const agregarRegistro = async (context, registro) => {
+  await addDoc(collection(db, "planilla", registro.id_empleado, "registros"), {
+    horas: parseFloat(registro.horas),
+    alimentacion: parseFloat(registro.alimentacion),
+    seguro: parseFloat(registro.seguro),
+    salario_hora: parseFloat(registro.salario_hora),
+    fecha_inicio: registro.fecha_inicio,
+    fecha_final: registro.fecha_final,
+    vales: parseFloat(registro.vales),
+  });
 };
 
-const editarRegistro = (context, registro) => {
-  db.collection("planilla")
-    .doc(registro.id_empleado)
-    .collection("registros")
-    .doc(registro.id)
-    .update({
-      horas: parseFloat(registro.horas),
-      alimentacion: parseFloat(registro.alimentacion),
-      seguro: parseFloat(registro.seguro),
-      salario_hora: parseFloat(registro.salario_hora),
-      fecha_inicio: registro.fecha_inicio,
-      fecha_final: registro.fecha_final,
-      vales: parseFloat(registro.vales),
-    })
-    .then(() => {});
+const editarRegistro = async (context, registro) => {
+  const docRef = doc(
+    db,
+    "planilla",
+    registro.id_empleado,
+    "registros",
+    registro.id
+  );
+  await updateDoc(docRef, {
+    horas: parseFloat(registro.horas),
+    alimentacion: parseFloat(registro.alimentacion),
+    seguro: parseFloat(registro.seguro),
+    salario_hora: parseFloat(registro.salario_hora),
+    fecha_inicio: registro.fecha_inicio,
+    fecha_final: registro.fecha_final,
+    vales: parseFloat(registro.vales),
+  });
 };
 
-const eliminarRegistro = (context, registro) => {
-  db.collection("planilla")
-    .doc(registro.id_empleado)
-    .collection("registros")
-    .doc(registro.id)
-    .delete()
-    .then(() => {});
+const eliminarRegistro = async (context, registro) => {
+  const docRef = doc(
+    db,
+    "planilla",
+    registro.id_empleado,
+    "registros",
+    registro.id
+  );
+  await deleteDoc(docRef);
 };
 
 /* ---------------- Funciones de Inicio de Sesion ------------------------- */
 const ingresoUsuario = (context, payload) => {
-  auth
-    .signInWithEmailAndPassword(payload.email, payload.pass)
+  signInWithEmailAndPassword(auth, payload.email, payload.pass)
     .then((res) => {
       context.commit("setUsuario", {
         email: res.user.email,
@@ -232,9 +240,10 @@ const detectarUsuario = (context, payload) => {
 };
 
 const cerrarSesion = (context) => {
-  auth.signOut();
-  context.commit("setUsuario", null);
-  router.push("/login");
+  signOut(auth).then(() => {
+    context.commit("setUsuario", null);
+    router.push("/login");
+  });
 };
 
 export default {
