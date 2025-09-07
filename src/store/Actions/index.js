@@ -3,17 +3,20 @@ import { auth, db, Timestamp } from "../../../firebase";
 
 /* ------------------ Planilla General --------------------------------- */
 const getPlanilla = (context, archive) => {
-  db.collection("planilla").where("archive", "==", archive).onSnapshot((querySnapshot) => {
-    const planilla = [];
-    querySnapshot.forEach((doc) => {
-      let dato = doc.data();
-      let date = dato.fecha_inicio.toDate();
-      dato.id = doc.id;
-      dato.fecha_inicio = date.toISOString().substr(0, 10);
-      planilla.push(dato);
+  db.collection("planilla")
+    .where("archive", "==", archive)
+    .onSnapshot((querySnapshot) => {
+      const planilla = [];
+      querySnapshot.forEach((doc) => {
+        let dato = doc.data();
+        console.log(dato);
+        let date = dato.fecha_inicio.toDate();
+        dato.id = doc.id;
+        dato.fecha_inicio = date.toISOString().substr(0, 10);
+        planilla.push(dato);
+      });
+      context.commit("setPlanilla", planilla);
     });
-    context.commit("setPlanilla", planilla);
-  });
 };
 
 /* ------------------- Funciones del Empleado ---------------------------- */
@@ -88,14 +91,20 @@ const getRegistrosEmpleado = (context, id) => {
         querySnapshot.forEach((doc) => {
           let dato = doc.data();
           dato.id = doc.id;
-          dato.fecha_inicio = dato.fecha_inicio
-            .toDate()
-            .toISOString()
-            .substr(0, 10);
-          dato.fecha_final = dato.fecha_final
-            .toDate()
-            .toISOString()
-            .substr(0, 10);
+          dato.fecha_inicio =
+            typeof dato.fecha_inicio === "string"
+              ? dato.fecha_inicio
+              : dato.fecha_inicio &&
+                typeof dato.fecha_inicio.toDate === "function"
+              ? dato.fecha_inicio.toDate().toISOString().substr(0, 10)
+              : "";
+          dato.fecha_final =
+            typeof dato.fecha_final === "string"
+              ? dato.fecha_final
+              : dato.fecha_final &&
+                typeof dato.fecha_final.toDate === "function"
+              ? dato.fecha_final.toDate().toISOString().substr(0, 10)
+              : "";
           dato.index = index;
           index++;
           registros.push(dato);
@@ -119,14 +128,20 @@ const getRegistrosEmpleadoVacaciones = (context, id) => {
         querySnapshot.forEach((doc) => {
           let dato = doc.data();
           dato.id = doc.id;
-          dato.fecha_inicio = dato.fecha_inicio
-            .toDate()
-            .toISOString()
-            .substr(0, 10);
-          dato.fecha_final = dato.fecha_final
-            .toDate()
-            .toISOString()
-            .substr(0, 10);
+          dato.fecha_inicio =
+            typeof dato.fecha_inicio === "string"
+              ? dato.fecha_inicio
+              : dato.fecha_inicio &&
+                typeof dato.fecha_inicio.toDate === "function"
+              ? dato.fecha_inicio.toDate().toISOString().substr(0, 10)
+              : "";
+          dato.fecha_final =
+            typeof dato.fecha_final === "string"
+              ? dato.fecha_final
+              : dato.fecha_final &&
+                typeof dato.fecha_final.toDate === "function"
+              ? dato.fecha_final.toDate().toISOString().substr(0, 10)
+              : "";
           dato.index = index;
           index++;
           registros.push(dato);
@@ -148,14 +163,20 @@ const getAllRegistrosEmpleado = (context, id) => {
         querySnapshot.forEach((doc) => {
           let dato = doc.data();
           dato.id = doc.id;
-          dato.fecha_inicio = dato.fecha_inicio
-            .toDate()
-            .toISOString()
-            .substr(0, 10);
-          dato.fecha_final = dato.fecha_final
-            .toDate()
-            .toISOString()
-            .substr(0, 10);
+          dato.fecha_inicio =
+            typeof dato.fecha_inicio === "string"
+              ? dato.fecha_inicio
+              : dato.fecha_inicio &&
+                typeof dato.fecha_inicio.toDate === "function"
+              ? dato.fecha_inicio.toDate().toISOString().substr(0, 10)
+              : "";
+          dato.fecha_final =
+            typeof dato.fecha_final === "string"
+              ? dato.fecha_final
+              : dato.fecha_final &&
+                typeof dato.fecha_final.toDate === "function"
+              ? dato.fecha_final.toDate().toISOString().substr(0, 10)
+              : "";
           dato.index = index;
           index++;
           registros.push(dato);
@@ -177,6 +198,13 @@ const agregarRegistro = (context, registro) => {
       fecha_inicio: registro.fecha_inicio,
       fecha_final: registro.fecha_final,
       vales: parseFloat(registro.vales),
+      horasPorDia: Array.isArray(registro.horasPorDia)
+        ? registro.horasPorDia.map((dia) => ({
+            inicio: dia.inicio || "",
+            final: dia.final || "",
+            horasDia: typeof dia.horasDia === "number" ? dia.horasDia : 0,
+          }))
+        : [],
     })
     .then((doc) => {});
 };

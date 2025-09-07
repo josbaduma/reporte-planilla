@@ -141,40 +141,188 @@
                                 </v-date-picker>
                               </v-menu>
                             </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field
-                                v-model="editedItem.salario_hora"
-                                label="Salario por hora"
-                                type="number"
-                              ></v-text-field
-                            ></v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field
-                                v-model="editedItem.vales"
-                                label="Vales"
-                                type="number"
-                              ></v-text-field
-                            ></v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field
-                                v-model="editedItem.seguro"
-                                label="Seguro"
-                                type="number"
-                              ></v-text-field>
+                            <v-col cols="12">
+                              <div class="mb-2">
+                                <h4>
+                                  <strong>Horas Totales: </strong
+                                  >{{ editedItem.horas }}
+                                </h4>
+                              </div>
                             </v-col>
-                            <v-col cols="12" sm="6" md="3">
-                              <v-text-field
-                                v-model="editedItem.alimentacion"
-                                label="Alimentación"
-                                type="number"
-                              ></v-text-field
-                            ></v-col>
-                            <v-col cols="12" sm="6" md="6">
-                              <v-text-field
-                                v-model="editedItem.horas"
-                                label="Horas Semanales"
-                                type="number"
-                              ></v-text-field>
+                            <v-col
+                              v-for="(dia, idx) in diasSemana"
+                              :key="dia.nombre"
+                              cols="12"
+                              sm="6"
+                              md="4"
+                            >
+                              <v-card outlined class="mb-2">
+                                <v-card-title class="py-2">
+                                  <strong>{{ dia.nombre }}</strong>
+                                  <span
+                                    v-if="
+                                      editedItem.horasPorDia[idx].inicio &&
+                                      editedItem.horasPorDia[idx].final
+                                    "
+                                    style="
+                                      margin-left: 8px;
+                                      color: #1976d2;
+                                      font-weight: normal;
+                                      font-size: 0.95em;
+                                    "
+                                  >
+                                    {{
+                                      calcularHorasDia(
+                                        editedItem.horasPorDia[idx].inicio,
+                                        editedItem.horasPorDia[idx].final
+                                      )
+                                    }}
+                                    h
+                                  </span>
+                                </v-card-title>
+                                <v-card-text>
+                                  <v-row>
+                                    <v-col cols="6">
+                                      <v-menu
+                                        v-model="
+                                          editedItem.horasPorDia[idx].menuInicio
+                                        "
+                                        :close-on-content-click="false"
+                                        transition="scale-transition"
+                                        offset-y
+                                        min-width="auto"
+                                      >
+                                        <template
+                                          v-slot:activator="{ on, attrs }"
+                                        >
+                                          <v-text-field
+                                            v-model="
+                                              editedItem.horasPorDia[idx].inicio
+                                            "
+                                            label="Inicio"
+                                            readonly
+                                            v-bind="attrs"
+                                            v-on="on"
+                                          ></v-text-field>
+                                        </template>
+                                        <v-time-picker
+                                          v-model="
+                                            editedItem.horasPorDia[idx].inicio
+                                          "
+                                          format="24hr"
+                                        >
+                                          <v-spacer></v-spacer>
+                                          <v-btn
+                                            text
+                                            color="primary"
+                                            @click="
+                                              editedItem.horasPorDia[
+                                                idx
+                                              ].menuInicio = false
+                                            "
+                                            >Cancelar</v-btn
+                                          >
+                                          <v-btn
+                                            text
+                                            color="primary"
+                                            @click="
+                                              editedItem.horasPorDia[
+                                                idx
+                                              ].menuInicio = false
+                                            "
+                                            >OK</v-btn
+                                          >
+                                        </v-time-picker>
+                                      </v-menu>
+                                    </v-col>
+                                    <v-col cols="6">
+                                      <v-menu
+                                        v-model="
+                                          editedItem.horasPorDia[idx].menuFinal
+                                        "
+                                        :close-on-content-click="false"
+                                        transition="scale-transition"
+                                        offset-y
+                                        min-width="auto"
+                                      >
+                                        <template
+                                          v-slot:activator="{ on, attrs }"
+                                        >
+                                          <v-text-field
+                                            v-model="
+                                              editedItem.horasPorDia[idx].final
+                                            "
+                                            label="Final"
+                                            readonly
+                                            v-bind="attrs"
+                                            v-on="on"
+                                          ></v-text-field>
+                                        </template>
+                                        <v-time-picker
+                                          v-model="
+                                            editedItem.horasPorDia[idx].final
+                                          "
+                                          format="24hr"
+                                        >
+                                          <v-spacer></v-spacer>
+                                          <v-btn
+                                            text
+                                            color="primary"
+                                            @click="
+                                              editedItem.horasPorDia[
+                                                idx
+                                              ].menuFinal = false
+                                            "
+                                            >Cancelar</v-btn
+                                          >
+                                          <v-btn
+                                            text
+                                            color="primary"
+                                            @click="
+                                              editedItem.horasPorDia[
+                                                idx
+                                              ].menuFinal = false
+                                            "
+                                            >OK</v-btn
+                                          >
+                                        </v-time-picker>
+                                      </v-menu>
+                                    </v-col>
+                                  </v-row>
+                                </v-card-text>
+                              </v-card>
+                            </v-col>
+                            <v-col cols="12">
+                              <v-row>
+                                <v-col cols="12" sm="6" md="3">
+                                  <v-text-field
+                                    v-model="editedItem.salario_hora"
+                                    label="Salario por hora"
+                                    type="number"
+                                  ></v-text-field>
+                                </v-col>
+                                <v-col cols="12" sm="6" md="3">
+                                  <v-text-field
+                                    v-model="editedItem.vales"
+                                    label="Vales"
+                                    type="number"
+                                  ></v-text-field>
+                                </v-col>
+                                <v-col cols="12" sm="6" md="3">
+                                  <v-text-field
+                                    v-model="editedItem.seguro"
+                                    label="Seguro"
+                                    type="number"
+                                  ></v-text-field>
+                                </v-col>
+                                <v-col cols="12" sm="6" md="3">
+                                  <v-text-field
+                                    v-model="editedItem.alimentacion"
+                                    label="Alimentación"
+                                    type="number"
+                                  ></v-text-field>
+                                </v-col>
+                              </v-row>
                             </v-col>
                           </v-row>
                         </v-container>
@@ -272,7 +420,7 @@ import { Timestamp } from "../../firebase";
 import Informacion from "../components/Informacion.vue";
 import Colilla from "../components/Colilla.vue";
 import Calculadora from "../components/Calculadora.vue";
-import HorasLaboradas from "../components/HorasLaboradas.vue"
+import HorasLaboradas from "../components/HorasLaboradas.vue";
 
 export default {
   name: "Empleado",
@@ -281,8 +429,8 @@ export default {
     Colilla,
     Calculadora,
     HorasLaboradas,
-    HorasLaboradas
-},
+    HorasLaboradas,
+  },
   data() {
     return {
       id: this.$route.params.id,
@@ -301,6 +449,15 @@ export default {
         { text: "Salario semanal", value: "salario_hora", sortable: false },
         { text: "Acciones", value: "actions", sortable: false },
       ],
+      diasSemana: [
+        { nombre: "Domingo" },
+        { nombre: "Lunes" },
+        { nombre: "Martes" },
+        { nombre: "Miércoles" },
+        { nombre: "Jueves" },
+        { nombre: "Viernes" },
+        { nombre: "Sábado" },
+      ],
       editedIndex: -1,
       editedItem: {
         id: 0,
@@ -308,9 +465,16 @@ export default {
         alimentacion: 0,
         seguro: 0,
         salario_hora: 0,
-        fecha_inicio: null,
-        fecha_final: null,
         vales: 0,
+        horasPorDia: [
+          { inicio: "", final: "", horasDia: 0 },
+          { inicio: "", final: "", horasDia: 0 },
+          { inicio: "", final: "", horasDia: 0 },
+          { inicio: "", final: "", horasDia: 0 },
+          { inicio: "", final: "", horasDia: 0 },
+          { inicio: "", final: "", horasDia: 0 },
+          { inicio: "", final: "", horasDia: 0 },
+        ],
       },
       defaultItem: {
         id: 0,
@@ -318,9 +482,16 @@ export default {
         alimentacion: 0,
         seguro: 0,
         salario_hora: 0,
-        fecha_inicio: null,
-        fecha_final: null,
         vales: 0,
+        horasPorDia: [
+          { inicio: "", final: "", horasDia: 0 },
+          { inicio: "", final: "", horasDia: 0 },
+          { inicio: "", final: "", horasDia: 0 },
+          { inicio: "", final: "", horasDia: 0 },
+          { inicio: "", final: "", horasDia: 0 },
+          { inicio: "", final: "", horasDia: 0 },
+          { inicio: "", final: "", horasDia: 0 },
+        ],
       },
     };
   },
@@ -361,27 +532,55 @@ export default {
         minimumFractionDigits: 0,
       });
       let valueFinal = formatterPeso.format(value);
-
       return valueFinal;
+    },
+    calcularHorasDia(inicio, final) {
+      if (!inicio || !final) return 0;
+      const [hIni, mIni] = inicio.split(":").map(Number);
+      const [hFin, mFin] = final.split(":").map(Number);
+      let inicioMin = hIni * 60 + mIni;
+      let finalMin = hFin * 60 + mFin;
+      let diff = finalMin - inicioMin;
+      return diff > 0 ? Math.round((diff / 60) * 100) / 100 : 0;
     },
     editItem(item) {
       this.editedIndex = this.allRegistros.indexOf(item);
-      this.editedItem = Object.assign({}, item);
+      // Copia profunda y asegura estructura de horasPorDia
+      const dias = 7;
+      let horasPorDia = Array.isArray(item.horasPorDia)
+        ? item.horasPorDia.slice()
+        : [];
+      for (let i = 0; i < dias; i++) {
+        if (!horasPorDia[i])
+          horasPorDia[i] = { inicio: "", final: "", horasDia: 0 };
+        if (horasPorDia[i].inicio === undefined) horasPorDia[i].inicio = "";
+        if (horasPorDia[i].final === undefined) horasPorDia[i].final = "";
+        if (horasPorDia[i].horasDia === undefined) horasPorDia[i].horasDia = 0;
+      }
+      // Asegura que fecha_inicio y fecha_final sean string para VDatePicker
+      let fecha_inicio = typeof item.fecha_inicio === "string"
+        ? item.fecha_inicio
+        : item.fecha_inicio && typeof item.fecha_inicio.toDate === "function"
+          ? item.fecha_inicio.toDate().toISOString().substr(0, 10)
+          : "";
+      let fecha_final = typeof item.fecha_final === "string"
+        ? item.fecha_final
+        : item.fecha_final && typeof item.fecha_final.toDate === "function"
+          ? item.fecha_final.toDate().toISOString().substr(0, 10)
+          : "";
+      this.editedItem = { ...item, horasPorDia, fecha_inicio, fecha_final };
       this.dialog = true;
     },
-
     printItem(item) {
       this.editedIndex = this.registros.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog_print = true;
     },
-
     deleteItem(item) {
       this.editedIndex = this.registros.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
-
     deleteItemConfirm() {
       const reg = {
         id: this.editedItem.id,
@@ -390,7 +589,6 @@ export default {
       this.eliminarRegistro(reg);
       this.closeDelete();
     },
-
     close() {
       this.dialog = false;
       this.$nextTick(() => {
@@ -398,7 +596,6 @@ export default {
         this.editedIndex = -1;
       });
     },
-
     closeDelete() {
       this.dialogDelete = false;
       this.$nextTick(() => {
@@ -406,7 +603,6 @@ export default {
         this.editedIndex = -1;
       });
     },
-
     save() {
       this.editedItem.id_empleado = this.id;
       this.editedItem.fecha_inicio = Timestamp.fromDate(
@@ -415,8 +611,29 @@ export default {
       this.editedItem.fecha_final = Timestamp.fromDate(
         new Date(this.editedItem.fecha_final)
       );
+      // Calcular horas totales de la semana y horas por día
+      let totalHoras = 0;
+      this.editedItem.horasPorDia.forEach((dia) => {
+        if (dia.inicio && dia.final) {
+          // Formato HH:mm
+          const [hIni, mIni] = dia.inicio.split(":").map(Number);
+          const [hFin, mFin] = dia.final.split(":").map(Number);
+          let inicioMin = hIni * 60 + mIni;
+          let finalMin = hFin * 60 + mFin;
+          let diff = finalMin - inicioMin;
+          if (diff > 0) {
+            const horasDia = Math.round((diff / 60) * 100) / 100;
+            dia.horasDia = horasDia;
+            totalHoras += horasDia;
+          } else {
+            dia.horasDia = 0;
+          }
+        } else {
+          dia.horasDia = 0;
+        }
+      });
+      this.editedItem.horas = Math.round(totalHoras * 100) / 100;
       if (this.editedIndex > -1) {
-        console.log('Editando...');
         this.editarRegistro(this.editedItem);
       } else {
         this.agregarRegistro(this.editedItem);
