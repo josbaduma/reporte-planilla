@@ -27,6 +27,11 @@ const setRegistrosVacaciones = (state, payload) => {
   state.registrosVacaciones = payload;
 };
 
+// Guarda el array de empleados con sus registros asociados
+const setEmpleadosConRegistros = (state, payload) => {
+  state.empleadosConRegistros = payload;
+};
+
 export default {
   setUsuario,
   setError,
@@ -36,4 +41,5 @@ export default {
   setRegistros,
   setAllRegistros,
   setRegistrosVacaciones,
+  setEmpleadosConRegistros,
 };

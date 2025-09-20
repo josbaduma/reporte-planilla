@@ -558,14 +558,16 @@ export default {
         if (horasPorDia[i].horasDia === undefined) horasPorDia[i].horasDia = 0;
       }
       // Asegura que fecha_inicio y fecha_final sean string para VDatePicker
-      let fecha_inicio = typeof item.fecha_inicio === "string"
-        ? item.fecha_inicio
-        : item.fecha_inicio && typeof item.fecha_inicio.toDate === "function"
+      let fecha_inicio =
+        typeof item.fecha_inicio === "string"
+          ? item.fecha_inicio
+          : item.fecha_inicio && typeof item.fecha_inicio.toDate === "function"
           ? item.fecha_inicio.toDate().toISOString().substr(0, 10)
           : "";
-      let fecha_final = typeof item.fecha_final === "string"
-        ? item.fecha_final
-        : item.fecha_final && typeof item.fecha_final.toDate === "function"
+      let fecha_final =
+        typeof item.fecha_final === "string"
+          ? item.fecha_final
+          : item.fecha_final && typeof item.fecha_final.toDate === "function"
           ? item.fecha_final.toDate().toISOString().substr(0, 10)
           : "";
       this.editedItem = { ...item, horasPorDia, fecha_inicio, fecha_final };

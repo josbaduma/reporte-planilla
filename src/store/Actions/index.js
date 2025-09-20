@@ -9,7 +9,6 @@ const getPlanilla = (context, archive) => {
       const planilla = [];
       querySnapshot.forEach((doc) => {
         let dato = doc.data();
-        console.log(dato);
         let date = dato.fecha_inicio.toDate();
         dato.id = doc.id;
         dato.fecha_inicio = date.toISOString().substr(0, 10);
@@ -152,13 +151,13 @@ const getRegistrosEmpleadoVacaciones = (context, id) => {
 };
 
 const getAllRegistrosEmpleado = (context, id) => {
+  const registros = [];
   setTimeout(() => {
     db.collection("planilla")
       .doc(id)
       .collection("registros")
       .orderBy("fecha_inicio")
       .onSnapshot((querySnapshot) => {
-        const registros = [];
         let index = 1;
         querySnapshot.forEach((doc) => {
           let dato = doc.data();
@@ -184,6 +183,7 @@ const getAllRegistrosEmpleado = (context, id) => {
         return context.commit("setAllRegistros", registros);
       });
   }, 500);
+  return registros;
 };
 
 const agregarRegistro = (context, registro) => {
@@ -280,4 +280,36 @@ export default {
   ingresoUsuario,
   detectarUsuario,
   cerrarSesion,
+  /**
+   * Carga los empleados no archivados y sus registros asociados
+   * Commit: setEmpleadosConRegistros
+   */
+  async getEmpleadosConRegistros(context) {
+    try {
+      const empleadosSnap = await db
+        .collection("planilla")
+        .where("archive", "==", false)
+        .get();
+      const empleadosConRegistros = await Promise.all(
+        empleadosSnap.docs.map(async (doc) => {
+          const empleado = doc.data();
+          const nombre = empleado.nombre || "";
+          const apellidos = empleado.apellidos || "";
+          const registrosSnap = await db
+            .collection("planilla")
+            .doc(doc.id)
+            .collection("registros")
+            .get();
+          const registros = registrosSnap.docs.map((r) => ({
+            id: r.id,
+            ...r.data(),
+          }));
+          return { nombre, registros, apellidos };
+        })
+      );
+      context.commit("setEmpleadosConRegistros", empleadosConRegistros);
+    } catch (error) {
+      console.error("Error al cargar empleados y registros:", error);
+    }
+  },
 };

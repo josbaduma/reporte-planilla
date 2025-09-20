@@ -28,6 +28,7 @@ export default new Vuex.Store({
     registros: [],
     allRegistros: [],
     registrosVacaciones: [],
+    empleadosConRegistros: [],
   },
   mutations,
   actions,

@@ -7,8 +7,16 @@
         </v-col>
         <v-col cols="12" md="12" sm="12" lg="12" xl="12">
           <div>
-            <v-data-table :headers="headers" :items="planilla" sort-by="cedula" class="elevation-1 overflow-div"
-              :page.sync="page" :items-per-page="10" hide-default-footer @page-count="pageCount = $event">
+            <v-data-table
+              :headers="headers"
+              :items="planilla"
+              sort-by="cedula"
+              class="elevation-1 overflow-div"
+              :page.sync="page"
+              :items-per-page="10"
+              hide-default-footer
+              @page-count="pageCount = $event"
+            >
               <template v-slot:top>
                 <v-toolbar flat color="white">
                   <v-toolbar-title>Empleados</v-toolbar-title>
@@ -17,8 +25,18 @@
                 </v-toolbar>
               </template>
               <template v-slot:[`item.actions`]="{ item }">
-                <v-btn class="mr-4" outlined color="teal lighten-1" @click="dearchiveEmployee(item)">Desarchivar</v-btn>
-                <v-icon class="mr-2" color="blue-grey darken-1" @click="goEmployeePage(item)">fas fa-arrow-circle-right
+                <v-btn
+                  class="mr-4"
+                  outlined
+                  color="teal lighten-1"
+                  @click="dearchiveEmployee(item)"
+                  >Desarchivar</v-btn
+                >
+                <v-icon
+                  class="mr-2"
+                  color="blue-grey darken-1"
+                  @click="goEmployeePage(item)"
+                  >fas fa-arrow-circle-right
                 </v-icon>
               </template>
             </v-data-table>
@@ -116,7 +134,12 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["getPlanilla", "agregarEmpleado", "eliminarEmpleado", "editarEmpleado"]),
+    ...mapActions([
+      "getPlanilla",
+      "agregarEmpleado",
+      "eliminarEmpleado",
+      "editarEmpleado",
+    ]),
     convertMoney(value) {
       const formatterPeso = new Intl.NumberFormat("es-CR", {
         style: "currency",
@@ -142,21 +165,22 @@ export default {
         new Date(this.editedItem.fecha_inicio)
       );
       this.editedItem.ultima_liquidacion = this.editedItem.fecha_inicio;
-      this.editedItem.ultima_liquidacion_vacaciones = this.editedItem.fecha_inicio;
+      this.editedItem.ultima_liquidacion_vacaciones =
+        this.editedItem.fecha_inicio;
 
       if (this.editedIndex > -1) {
         console.log("Editar");
       } else {
         this.agregarEmpleado(this.editedItem);
-        console.log("Liquidación:" + this.editedIndex.ultima_liquidacion);
       }
       this.close();
     },
     dearchiveEmployee(employee) {
       employee.fecha_inicio = Timestamp.fromDate(
-        new Date(employee.fecha_inicio));
+        new Date(employee.fecha_inicio)
+      );
       employee.archive = false;
-      this.editarEmpleado(employee)
+      this.editarEmpleado(employee);
     },
   },
 };
