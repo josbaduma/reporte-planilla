@@ -11,7 +11,7 @@ const setEmpleado = (state, payload) => {
   state.empleado = payload;
 };
 const eliminarEmpleado = (state, id) => {
-  state.empleados = state.empleados.filter((doc) => {
+  state.planilla = state.planilla.filter((doc) => {
     return doc.id != id;
   });
 };

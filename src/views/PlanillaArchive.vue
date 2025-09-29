@@ -32,6 +32,13 @@
                   @click="dearchiveEmployee(item)"
                   >Desarchivar</v-btn
                 >
+                <v-btn
+                  class="mr-4"
+                  outlined
+                  color="red lighten-1"
+                  @click="eliminarEmpleado(item.id)"
+                  >Borrar</v-btn
+                >
                 <v-icon
                   class="mr-2"
                   color="blue-grey darken-1"

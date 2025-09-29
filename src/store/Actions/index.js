@@ -24,10 +24,16 @@ const getEmpleado = (context, id) => {
     .doc(id)
     .onSnapshot((doc) => {
       let empleado = doc.data();
-      empleado.fecha_inicio = empleado.fecha_inicio
-        .toDate()
-        .toISOString()
-        .substr(0, 10);
+      if (!empleado) return;
+      if (
+        empleado.fecha_inicio &&
+        typeof empleado.fecha_inicio.toDate === "function"
+      ) {
+        empleado.fecha_inicio = empleado.fecha_inicio
+          .toDate()
+          .toISOString()
+          .substr(0, 10);
+      }
       empleado.id = doc.id;
       context.commit("setEmpleado", empleado);
     });
@@ -71,7 +77,7 @@ const eliminarEmpleado = ({ commit, dispatch }, id) => {
     .doc(id)
     .delete()
     .then(() => {
-      context.commit("eliminarEmpleado", id);
+      commit("eliminarEmpleado", id);
     });
 };
 
