@@ -366,7 +366,7 @@
               <template v-slot:[`item.salario_hora`]="{ item }">
                 <span>{{
                   convertMoney(
-                    item.horas * item.salario_hora +
+                    item.horas * item.salario_hora -
                       item.vales -
                       item.alimentacion -
                       item.seguro

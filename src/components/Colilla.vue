@@ -6,7 +6,7 @@
         ref="document"
         id="registro-impreso"
         class="pa-0"
-        style="color:#000000;"
+        style="color: #000000"
       >
         <div class="pa-0">
           <table class="tg" id="toExcel" data-cols-width="7,7,8,7,7,7,7,7,7,,6">
@@ -18,7 +18,7 @@
                   class="tg-eqm3"
                   colspan="6"
                 >
-                  <span style="font-weight:bold">Recibo de Pago</span>
+                  <span style="font-weight: bold">Recibo de Pago</span>
                 </th>
                 <th
                   data-b-a-s="thin"
@@ -26,7 +26,7 @@
                   class="tg-0pky"
                   colspan="2"
                 >
-                  <span style="font-weight:bold">Fecha:</span>
+                  <span style="font-weight: bold">Fecha:</span>
                 </th>
                 <th
                   data-b-a-s="thin"
@@ -54,7 +54,7 @@
                   class="tg-0pky"
                   colspan="3"
                 >
-                  <span style="font-weight:bold"
+                  <span style="font-weight: bold"
                     >Número de identificación:</span
                   >
                 </td>
@@ -67,10 +67,10 @@
                   class="tg-0pky"
                   colspan="3"
                 >
-                  <span style="font-weight:bold">Puesto:</span>
+                  <span style="font-weight: bold">Puesto:</span>
                 </td>
                 <td data-b-a-s="thin" class="tg-0pky" colspan="3">
-                  <span style="font-weight:400;font-style:normal">{{
+                  <span style="font-weight: 400; font-style: normal">{{
                     empleado.puesto
                   }}</span>
                 </td>
@@ -82,12 +82,12 @@
                   class="tg-0pky"
                   colspan="3"
                 >
-                  <span style="font-weight:bolder;font-style:normal"
+                  <span style="font-weight: bolder; font-style: normal"
                     >Nombre:</span
                   >
                 </td>
                 <td data-b-a-s="thin" class="tg-0pky" colspan="9">
-                  <span style="font-weight:400;font-style:normal"
+                  <span style="font-weight: 400; font-style: normal"
                     >{{ empleado.nombre }} {{ empleado.apellidos }}</span
                   >
                 </td>
@@ -99,10 +99,10 @@
                   class="tg-0pky"
                   colspan="3"
                 >
-                  <span style="font-weight:bolder">Tipo de Colaborador:</span>
+                  <span style="font-weight: bolder">Tipo de Colaborador:</span>
                 </td>
                 <td data-b-a-s="thin" class="tg-0pky" colspan="9">
-                  <span style="font-weight:400;font-style:normal">{{
+                  <span style="font-weight: 400; font-style: normal">{{
                     empleado.tipo_colaborador
                   }}</span>
                 </td>
@@ -127,12 +127,12 @@
                   class="tg-0pky"
                   colspan="3"
                 >
-                  <span style="font-weight:700;font-style:normal"
+                  <span style="font-weight: 700; font-style: normal"
                     >Periodo Laborado:</span
                   >
                 </td>
                 <td data-b-a-s="thin" class="tg-0pky" colspan="3">
-                  <span style="font-weight:400;font-style:normal">{{
+                  <span style="font-weight: 400; font-style: normal">{{
                     registro.fecha_inicio
                   }}</span>
                 </td>
@@ -142,10 +142,10 @@
                   class="tg-0pky"
                   colspan="3"
                 >
-                  <span style="font-weight:bold;font-style:normal">Al:</span>
+                  <span style="font-weight: bold; font-style: normal">Al:</span>
                 </td>
                 <td data-b-a-s="thin" class="tg-0pky" colspan="3">
-                  <span style="font-weight:400;font-style:normal">{{
+                  <span style="font-weight: 400; font-style: normal">{{
                     registro.fecha_final
                   }}</span>
                 </td>
@@ -158,7 +158,7 @@
                   class="tg-gmla"
                   colspan="12"
                 >
-                  <span style="font-weight:700;font-style:normal"
+                  <span style="font-weight: 700; font-style: normal"
                     >Desglose</span
                   >
                 </td>
@@ -170,12 +170,12 @@
                   class="tg-0pky"
                   colspan="3"
                 >
-                  <span style="font-weight:700;font-style:normal"
+                  <span style="font-weight: 700; font-style: normal"
                     >Horas Laboradas:</span
                   >
                 </td>
                 <td data-b-a-s="thin" class="tg-0pky" colspan="3">
-                  <span style="font-weight:400;font-style:normal">{{
+                  <span style="font-weight: 400; font-style: normal">{{
                     registro.horas
                   }}</span>
                 </td>
@@ -185,12 +185,12 @@
                   class="tg-0pky"
                   colspan="3"
                 >
-                  <span style="font-weight:700;font-style:normal"
+                  <span style="font-weight: 700; font-style: normal"
                     >Salario Bruto:</span
                   >
                 </td>
                 <td data-b-a-s="thin" class="tg-0pky" colspan="3">
-                  <span style="font-weight:400;font-style:normal">{{
+                  <span style="font-weight: 400; font-style: normal">{{
                     convertMoney(registro.horas * registro.salario_hora)
                   }}</span>
                 </td>
@@ -203,7 +203,7 @@
                   class="tg-gmla"
                   colspan="12"
                 >
-                  <span style="font-weight:700;font-style:normal"
+                  <span style="font-weight: 700; font-style: normal"
                     >Deducciones</span
                   >
                 </td>
@@ -215,10 +215,12 @@
                   class="tg-0pky"
                   colspan="2"
                 >
-                  <span style="font-weight:700;font-style:normal">Seguro:</span>
+                  <span style="font-weight: 700; font-style: normal"
+                    >Seguro:</span
+                  >
                 </td>
                 <td data-b-a-s="thin" class="tg-0pky" colspan="2">
-                  <span style="font-weight:400;font-style:normal">{{
+                  <span style="font-weight: 400; font-style: normal">{{
                     convertMoney(registro.seguro)
                   }}</span>
                 </td>
@@ -228,12 +230,12 @@
                   class="tg-fymr"
                   colspan="2"
                 >
-                  <span style="font-weight:700;font-style:normal"
+                  <span style="font-weight: 700; font-style: normal"
                     >Alimentación:</span
                   >
                 </td>
                 <td data-b-a-s="thin" class="tg-0pky" colspan="2">
-                  <span style="font-weight:400;font-style:normal">{{
+                  <span style="font-weight: 400; font-style: normal">{{
                     convertMoney(registro.alimentacion)
                   }}</span>
                 </td>
@@ -243,10 +245,12 @@
                   class="tg-0pky"
                   colspan="2"
                 >
-                  <span style="font-weight:700;font-style:normal">Vales:</span>
+                  <span style="font-weight: 700; font-style: normal"
+                    >Vales:</span
+                  >
                 </td>
                 <td data-b-a-s="thin" class="tg-0pky" colspan="2">
-                  <span style="font-weight:400;font-style:normal">{{
+                  <span style="font-weight: 400; font-style: normal">{{
                     convertMoney(registro.vales)
                   }}</span>
                 </td>
@@ -258,7 +262,7 @@
                   class="tg-0pky"
                   colspan="3"
                 >
-                  <span style="font-weight:700;font-style:normal"
+                  <span style="font-weight: 700; font-style: normal"
                     >Total a pagar:</span
                   >
                 </td>
@@ -267,7 +271,7 @@
                     convertMoney(
                       registro.horas * registro.salario_hora -
                         registro.alimentacion -
-                        registro.seguro +
+                        registro.seguro -
                         registro.vales
                     )
                   }}
@@ -282,7 +286,7 @@
                   colspan="3"
                   rowspan="2"
                 >
-                  <span style="font-weight:700;font-style:normal"
+                  <span style="font-weight: 700; font-style: normal"
                     >Firma del colaborador:</span
                   >
                 </td>
@@ -320,7 +324,7 @@
                   class="tg-0lax"
                   colspan="3"
                 >
-                  <span style="font-weight:400;font-style:normal"
+                  <span style="font-weight: 400; font-style: normal"
                     >Alejandro León Villegas</span
                   >
                 </td>
