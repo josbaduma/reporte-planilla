@@ -422,7 +422,6 @@ export default {
       const fechaInicio = this.filtro_fecha_inicio;
       const fechaFinal = this.filtro_fecha_final;
 
-      // Formatea fecha a DD-MM-YYYY
       const formatFecha = (fecha) => {
         if (!fecha) return "";
         const [y, m, d] = fecha.split("-");
@@ -435,6 +434,7 @@ export default {
         const apellidos = empleado.apellidos || "";
         if (!empleado.registros || !Array.isArray(empleado.registros)) return;
         empleado.registros.forEach((reg) => {
+          console.log(reg.vales);
           const fechaReg = this.toDateString(reg.fecha_inicio);
           if (fechaReg >= fechaInicio && fechaReg <= fechaFinal) {
             const key = nombre;
@@ -442,9 +442,11 @@ export default {
               empleados[key] = {
                 nombre: nombre + " " + apellidos,
                 horas: 0,
+                vales: 0,
               };
             }
             empleados[key].horas += Number(reg.horas || 0);
+            empleados[key].vales += Number(reg.vales || 0);
           }
         });
       });
@@ -456,8 +458,8 @@ export default {
           )}`,
         ],
         [],
-        ["Nombre", "Horas Totales"],
-        ...Object.values(empleados).map((e) => [e.nombre, e.horas]),
+        ["Nombre", "Vales", "Horas Totales"],
+        ...Object.values(empleados).map((e) => [e.nombre, e.vales, e.horas]),
       ];
       const ws = XLSX.utils.aoa_to_sheet(data);
 

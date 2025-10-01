@@ -457,6 +457,7 @@ export default {
         { nombre: "Jueves" },
         { nombre: "Viernes" },
         { nombre: "Sábado" },
+        { nombre: "Feriado" },
       ],
       editedIndex: -1,
       editedItem: {
@@ -474,6 +475,7 @@ export default {
           { inicio: "", final: "", horasDia: 0 },
           { inicio: "", final: "", horasDia: 0 },
           { inicio: "", final: "", horasDia: 0 },
+          { inicio: "", final: "", horasDia: 0 },
         ],
       },
       defaultItem: {
@@ -484,6 +486,7 @@ export default {
         salario_hora: 0,
         vales: 0,
         horasPorDia: [
+          { inicio: "", final: "", horasDia: 0 },
           { inicio: "", final: "", horasDia: 0 },
           { inicio: "", final: "", horasDia: 0 },
           { inicio: "", final: "", horasDia: 0 },
