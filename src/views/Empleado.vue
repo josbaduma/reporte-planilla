@@ -21,7 +21,7 @@
               sort-by="fecha_inicio"
               class="elevation-1 overflow-div"
               :page.sync="page"
-              :items-per-page="5"
+              :items-per-page="25"
               hide-default-footer
               @page-count="pageCount = $event"
               :sort-desc="[true]"
@@ -151,7 +151,7 @@
                             </v-col>
                             <v-col
                               v-for="(dia, idx) in diasSemana"
-                              :key="dia.nombre"
+                              :key="`dia-${idx}`"
                               cols="12"
                               sm="6"
                               md="4"
@@ -511,6 +511,7 @@ export default {
     await this.getRegistrosEmpleado(this.id);
     await this.getAllRegistrosEmpleado(this.id);
     await this.getRegistrosEmpleadoVacaciones(this.id);
+    console.log(`Data: ${JSON.stringify(await this.allRegistros)}`);
   },
   computed: {
     ...mapState(["registros", "allRegistros", "registrosVacaciones"]),
